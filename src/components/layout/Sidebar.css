@@ -1,0 +1,15 @@
+.custom-menu .ant-menu-item-selected { 
+    border-left: 8px solid #FFFFFF; 
+    background: linear-gradient(to right , #464baf 50%, #292C61 100%);
+    color: #fff !important;
+}
+
+.custom-menu .ant-menu-item:hover { 
+    border-left: 8px solid #FFFFFF; 
+    background: linear-gradient(to right , #464baf 50%, #292C61 100%);
+    color: #fff !important;
+}
+
+.ant-menu-light.ant-menu-root.ant-menu-inline{
+    width: 291px;
+}
