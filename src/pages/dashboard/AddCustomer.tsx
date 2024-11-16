@@ -1,14 +1,14 @@
 
 import { Form } from 'antd';
 import { BsArrowLeft } from 'react-icons/bs';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import CommonInput from '../../components/shared/CommonInput';
 
 
 const AddCustomer = () => {
   const { id } = useParams();   
   console.log(id);
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); 
 
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Breadcrumb, Button, Form, Input, Switch, Radio } from 'antd';
+import { Breadcrumb, Button, Form, Input, Radio } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import { PiImageThin } from 'react-icons/pi';
 import CommonInput from '../../../components/shared/CommonInput';

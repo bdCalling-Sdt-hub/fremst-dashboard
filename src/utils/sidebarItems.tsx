@@ -1,6 +1,5 @@
 import { TSidebarItem } from './generateSidebarItems';
-import { AiOutlineFileText, AiOutlineQuestionCircle, AiOutlineStar } from 'react-icons/ai';
-import { BsBox, BsMegaphone, BsPersonGear } from 'react-icons/bs';
+import { BsBox } from 'react-icons/bs';
 import { TbLogout } from 'react-icons/tb';
 import { RxDashboard } from 'react-icons/rx';
 import { LuUser2 } from 'react-icons/lu';
