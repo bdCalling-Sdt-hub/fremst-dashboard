@@ -1,16 +1,21 @@
 import { Layout, Select } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import CommonTitle from '../shared/CommonTitle';
+import { useGetProfileQuery } from '../../redux/features/auth/authApi';
+import { imageUrl } from '../../redux/base/baseApi';
 const { Header } = Layout; 
 const { Option } = Select;
 
-const HeaderDashboard = () => { 
+const HeaderDashboard = () => {  
+    const {data} = useGetProfileQuery(undefined)  
+    const profileData = data?.data 
+
     const statusOptions = [
         { value: 'eng', text: 'ENG', imgSrc: '/eng.svg' },
        
       ]; 
 
-      const location = useLocation();    
+      const location = useLocation();     
 
       const pathName = location?.pathname;
       const formattedPathName = pathName === "/" 
@@ -63,7 +68,7 @@ const HeaderDashboard = () => {
                         }}
                     >
                         <img
-                            src={'/user.svg'}
+                            src={profileData?.profile?.startsWith("https") ? profileData?.profile : `${imageUrl}${profileData?.profile}`}
                             style={{
                                 width: '50px',
                                 height: '50px',
@@ -78,7 +83,7 @@ const HeaderDashboard = () => {
                                 fontWeight: '600',
                             }}
                         >
-                           Anna Watson
+                           {profileData?.name}
                         </h2>
                     </Link>
                 </div>

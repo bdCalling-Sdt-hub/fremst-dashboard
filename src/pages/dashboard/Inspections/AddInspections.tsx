@@ -15,7 +15,7 @@ const AddInspections = () => {
           return isPDF || Upload.LIST_IGNORE;
         },
         onChange: (info) => {
-          console.log(info.fileList);
+        //   console.log(info.fileList); 
         },
       };
 

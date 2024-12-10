@@ -1,8 +1,11 @@
+
 import MainLayout from './components/layout/MainLayout';
 import { ConfigProvider } from 'antd';
+
 function App() {
     return (
-        <>
+        <> 
+       
             <ConfigProvider
                 theme={{
                     token: {
@@ -17,7 +20,8 @@ function App() {
                 }}
             >
                 <MainLayout />
-            </ConfigProvider>
+            </ConfigProvider> 
+
         </>
     );
 }

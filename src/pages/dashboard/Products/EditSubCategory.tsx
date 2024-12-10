@@ -9,7 +9,6 @@ const EditSubCategory = () => {
     const [questions, setQuestions] = useState([{ id: 1, text: '', commentEnabled: false }]);
     const { category , subCategory } = useParams();  
 
-console.log(subCategory);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];

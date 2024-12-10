@@ -7,7 +7,7 @@ import CommonInput from '../../components/shared/CommonInput';
 
 const AddCustomer = () => {
   const { id } = useParams();   
-  console.log(id);
+
   // const navigate = useNavigate(); 
 
 

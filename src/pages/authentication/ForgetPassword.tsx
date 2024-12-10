@@ -1,12 +1,48 @@
-import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
+import { Button, ConfigProvider, Form, Input } from 'antd';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useForgetPasswordMutation } from '../../redux/features/auth/authApi';
+import Swal from 'sweetalert2';
 
 const ForgetPassword = () => {
-    const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/verify-otp');
+    const navigate = useNavigate();  
+    const [email , setEmail] = useState()
+    const [forgetPassword, {isLoading , isError , error , data , isSuccess}] = useForgetPasswordMutation() 
+ 
+
+    useEffect(() => {
+        if (isSuccess) {
+         
+          if (data) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              text: data?.message,
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              localStorage.setItem("email", JSON.stringify(email))    
+              navigate('/verify-otp')
+              window.location.reload(); 
+            });
+          }
+    
+        }
+        if (isError) {
+          Swal.fire({          
+            //@ts-ignore
+            text: error?.data?.message,  
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data, navigate]);   
+
+
+    const onFinish = async(values:{ email: SetStateAction<undefined>; }) => {  
+       
+        setEmail(values?.email)
+     await forgetPassword(values)
+        //; 
     };
 
     return (
@@ -65,7 +101,7 @@ const ForgetPassword = () => {
                                     fontWeight: 500,
                                 }}
                             >
-                                Send Code
+                             { isLoading ? "Loading..." : "Send Code"} 
                             </Button>
                         </Form.Item>
                     </Form>

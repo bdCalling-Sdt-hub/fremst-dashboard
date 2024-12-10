@@ -23,7 +23,7 @@ const MainLayout: React.FC = () => {
                 {/* header */}
 
                 <HeaderDashboard />
-                <Content className='m-5 ms-[38px]' >
+                <Content className='m-5 ms-[38px] overflow-auto' >
                     <div
                         style={{
                             padding: 0,

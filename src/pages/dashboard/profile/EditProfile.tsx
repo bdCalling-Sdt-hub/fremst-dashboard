@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { CiEdit } from 'react-icons/ci';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../../redux/features/auth/authApi';
+import { imageUrl } from '../../../redux/base/baseApi';
+import Swal from 'sweetalert2';
 
 interface FormValues {
     name: string;
@@ -9,12 +12,57 @@ interface FormValues {
 }
 
 const EditProfile: React.FC = () => {
-    const [imagePreview, setImagePreview] = useState<string>('/user.svg');
-    const [file, setFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string>('');
+    const [file, setFile] = useState<File | null>(null); 
+    const {data:profile} = useGetProfileQuery(undefined)    
+    const [updateProfile , {isError , isLoading , isSuccess , data , error}] = useUpdateProfileMutation()
+    const [form] = Form.useForm()
+    const userData = profile?.data 
+   
 
-    const onFinish = (values: FormValues) => {
-        console.log('Received values of form: ', values);
-        values.image = file;
+    useEffect(()=>{ 
+        if(userData){
+            form.setFieldsValue({email:userData?.email , name:userData?.name}) 
+            setImagePreview(userData?.profile?.startsWith("https") ? userData?.profile : `${imageUrl}${userData?.profile}`)
+        }
+    },[userData , form]) 
+
+ 
+    useEffect(() => {
+        if (isSuccess) { 
+          if (data) {
+            Swal.fire({
+              text: data?.message ,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => { 
+              window.location.reload(); 
+            });
+          }
+        }
+        if (isError) {
+          Swal.fire({ 
+            //@ts-ignore
+            text: error?.data?.message,  
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data])   
+ 
+
+
+    const onFinish = async(values:any) => { 
+        const formData = new FormData() 
+        if(file){
+            formData?.append("profile" , file)
+        } 
+
+       formData.append("name",values?.name) 
+  
+        await updateProfile(formData)
+     
+ 
     };
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,11 +75,11 @@ const EditProfile: React.FC = () => {
             };
             reader.readAsDataURL(selectedFile);
         }
-    };
+    }; 
 
     return (
         <div className="max-w-lg mx-auto">
-            <Form name="update_profile" layout="vertical" initialValues={{ remember: true }} onFinish={onFinish}>
+            <Form name="update_profile" layout="vertical" initialValues={{ remember: true }} onFinish={onFinish} form={form}>
                 {/* Banner Image */}
                 <div className="flex justify-center">
                     <div className="w-[150px] h-[150px] relative">
@@ -78,7 +126,7 @@ const EditProfile: React.FC = () => {
                     name="email"
                     rules={[{ required: true, message: 'Please input your email!' }]}
                 >
-                    <Input className="h-12" placeholder="Enter your email" />
+                    <Input className="h-12" placeholder="Enter your email" readOnly />
                 </Form.Item>
 
                 <Form.Item className="flex justify-center">
@@ -89,7 +137,7 @@ const EditProfile: React.FC = () => {
                         type="primary"
                         htmlType="submit"
                     >
-                        Update Profile
+                      {isLoading ? "Updating..." : "Update"} 
                     </Button>
                 </Form.Item>
             </Form>

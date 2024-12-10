@@ -1,18 +1,25 @@
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
+export interface Root {
+    customers: number
+    products: number
+    
+  }
+  
 
 
-const Summary = () => { 
+const Summary = ({homeData}:{homeData:Root}) => {  
+
     const data=[
         {
             icon: <IoPersonCircleOutline size={32} /> , 
             title: "Customer" ,
-            total: 6
+            total: homeData?.customers
         } , 
         {
             icon: <PiDotsNineBold size={32} /> , 
             title: "Products" ,
-            total: 12
+            total: homeData?.products
         } , 
     ]
     return (

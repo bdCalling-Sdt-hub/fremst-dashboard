@@ -9,11 +9,10 @@ import { PiImageThin } from "react-icons/pi";
 const AddProducts = () => { 
     const [imgFile, setImgFile] = useState(null);
     const [imageUrl, setImageUrl] = useState() 
-console.log(imgFile);
     
     const handleChange = (e:any) => {
         const file = e.target.files[0]
-        //console.log(file);
+
         setImgFile(file); 
         //@ts-ignore
         setImageUrl(URL.createObjectURL(file))
