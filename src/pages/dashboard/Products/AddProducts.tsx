@@ -1,14 +1,43 @@
-import { Form, Input } from "antd";
+import { Checkbox, Form, Input } from "antd";
 import { BsArrowLeft } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CommonInput from "../../../components/shared/CommonInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiImageThin } from "react-icons/pi";
+import { useAddNewProductMutation } from "../../../redux/features/Dashboard/productsApi";
+import Swal from "sweetalert2";
 
 
-const AddProducts = () => { 
+const AddProducts = () => {  
+    const navigate = useNavigate()
     const [imgFile, setImgFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState() 
+    const [imageUrl, setImageUrl] = useState()   
+    const [addNewProduct , {isLoading , isError , isSuccess , data , error}] = useAddNewProductMutation()
+
+    useEffect(() => {
+        if (isSuccess) { 
+          if (data) {
+            Swal.fire({
+              text: data?.message ,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              navigate("/products")  
+              window.location.reload(); 
+            });
+          }
+    
+        }
+        if (isError) {
+          Swal.fire({ 
+            //@ts-ignore
+            text: error?.data?.message,  
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data, navigate])     
+
     
     const handleChange = (e:any) => {
         const file = e.target.files[0]
@@ -16,7 +45,25 @@ const AddProducts = () => {
         setImgFile(file); 
         //@ts-ignore
         setImageUrl(URL.createObjectURL(file))
-    };
+    }; 
+
+    const onFinish = async(values:any) => {
+     
+        const formData = new FormData() 
+      const  {imagess , ...newValues}= values 
+       if(imgFile){
+        formData?.append("image" , imgFile)
+       } 
+       
+       Object.entries(newValues).forEach(([key, value]) => {
+        formData?.append(key, value as string);
+      }); 
+
+      await addNewProduct(formData).then((res) => {  
+        console.log(res);
+      })
+
+    }
     return (
         <div className='w-full'>
         <div className='flex items-center gap-2 pb-[24px]'> 
@@ -27,15 +74,23 @@ const AddProducts = () => {
   
         {/* form   */} 
   
-        <Form layout='vertical' className='w-2/3'>   
+        <Form layout='vertical' className='w-2/3' onFinish={onFinish}>   
         <div className=" flex gap-10 w-full">
           <div className='pb-[5px] w-full'>
-    <CommonInput name='productName' label='Product name' />
-    <CommonInput name='qus1' label='Question - 01' />
-    <CommonInput name='qus2' label='Question - 02' />
-    <CommonInput name='qus3' label='Question - 03' />
-    <CommonInput name='qus4' label='Question - 04' />
-    <CommonInput name='qus5' label='Question - 05' />
+    <CommonInput name='name' label='Product name' />
+    <CommonInput name='brand' label='Brand' />
+    <CommonInput name='type' label='Product Type' />
+    <CommonInput name='companyName' label='Company Name' />
+    <CommonInput name='contactPerson' label='Contact Person' />
+    
+    <Form.Item
+        name="isActive"
+        valuePropName="checked" 
+        label={<p className='text-[14px] font-semibold'>Active Status</p>}
+      >
+        <Checkbox>Active</Checkbox>
+      </Form.Item> 
+
           </div>   
           {/* image  */}
           <div className=' py-[4px] w-full'>
@@ -69,10 +124,13 @@ const AddProducts = () => {
                     </label>
                 </div> 
         </div>
-  
-          <button className="bg-primary text-white w-[500px] h-[50px] text-lg rounded-lg mt-5">
-         Create
+   
+   <Form.Item > 
+
+          <button type="submit" className="bg-primary text-white w-[500px] h-[50px] text-lg rounded-lg mt-5">
+     {isLoading ? "Loading..." : "Create"}     Create
           </button>
+   </Form.Item>
         </Form>
       
       </div>

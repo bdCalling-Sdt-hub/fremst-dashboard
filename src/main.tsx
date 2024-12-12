@@ -4,12 +4,14 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/routes.tsx";
 import ReduxProvider from "./redux/lib/ReduxProvider.tsx";
+import { InspectionProvider } from "./context/InspectionContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode> 
+  <StrictMode>  
     <ReduxProvider > 
-
+ <InspectionProvider > 
     <RouterProvider router={router} />
+ </InspectionProvider>
     </ReduxProvider>
   </StrictMode>
 );

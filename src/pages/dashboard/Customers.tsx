@@ -1,103 +1,84 @@
 import { Table, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDeleteCustomerMutation, useGetAllCustomersQuery } from '../../redux/features/Dashboard/customersApi';
+import { useState } from 'react';
+import AddCustomerModal from './AddCustomerModal';
+import Swal from 'sweetalert2';
+ 
+interface valueType{
+  _id:string|number|null ,
+  companyName:string,
+  companyPhone:string,
+  contactPerson:string,
+  address:string,
+  email:string,
+  phone:string
+}
 
-// Sample data
-const customerData = [
-    {
-      id: 1,
-      companyName: "Tech Solutions Ltd",
-      companyNumber: "0012345678",
-      contactPerson: "Alice Johnson",
-      address: "123 Tech Ave, Silicon Valley, CA 94025",
-      email: "alice@techsolutions.com",
-      phone: "+1 555-0123-4567"
-    },
-    {
-      id: 2,
-      companyName: "Green Energy Corp",
-      companyNumber: "0023456789",
-      contactPerson: "Bob Smith",
-      address: "456 Green Rd, Denver, CO 80203",
-      email: "bob@greenenergy.com",
-      phone: "+1 555-0234-5678"
-    },
-    {
-      id: 3,
-      companyName: "Global Logistics Inc",
-      companyNumber: "0034567890",
-      contactPerson: "Catherine Lee",
-      address: "789 Cargo St, Dallas, TX 75201",
-      email: "catherine@globallogistics.com",
-      phone: "+1 555-0345-6789"
-    },
-    {
-      id: 4,
-      companyName: "FinTech Innovations",
-      companyNumber: "0045678901",
-      contactPerson: "David Patel",
-      address: "101 Finance Ln, New York, NY 10005",
-      email: "david@fintechinnovations.com",
-      phone: "+1 555-0456-7890"
-    },
-    {
-      id: 5,
-      companyName: "Blue Ocean Foods",
-      companyNumber: "0056789012",
-      contactPerson: "Emily Chen",
-      address: "202 Seafood Blvd, Miami, FL 33101",
-      email: "emily@blueoceanfoods.com",
-      phone: "+1 555-0567-8901"
-    },
-    {
-      id: 6,
-      companyName: "Peak Healthcare",
-      companyNumber: "0067890123",
-      contactPerson: "Frank Williams",
-      address: "303 Wellness Dr, Seattle, WA 98101",
-      email: "frank@peakhealthcare.com",
-      phone: "+1 555-0678-9012"
-    },
-    {
-      id: 7,
-      companyName: "Epsilon AI Labs",
-      companyNumber: "0078901234",
-      contactPerson: "Grace Kim",
-      address: "404 Neural St, Boston, MA 02115",
-      email: "grace@epsilonailabs.com",
-      phone: "+1 555-0789-0123"
-    },
-    {
-      id: 8,
-      companyName: "EcoFriendly Solutions",
-      companyNumber: "0089012345",
-      contactPerson: "Henry Lopez",
-      address: "505 Greenway Rd, Portland, OR 97204",
-      email: "henry@ecofriendly.com",
-      phone: "+1 555-0890-1234"
-    },
-    {
-      id: 9,
-      companyName: "Urban Builders LLC",
-      companyNumber: "0090123456",
-      contactPerson: "Isabella Garcia",
-      address: "606 Cityscape Ave, Chicago, IL 60601",
-      email: "isabella@urbanbuilders.com",
-      phone: "+1 555-0901-2345"
-    },
-    {
-      id: 10,
-      companyName: "Digital Marketing Pros",
-      companyNumber: "0101234567",
-      contactPerson: "James Anderson",
-      address: "707 Digital Dr, Austin, TX 73301",
-      email: "james@digitalmarketingpros.com",
-      phone: "+1 555-1012-3456"
-    }
-  ];
 
 const Customers = () => {
-    const navigate = useNavigate();
+   
+    const [page , setPage] = useState(1) 
+    const [search , setSearch] = useState("") 
+    const [open , setOpen] = useState(false)  
+    const [deleteCustomer] = useDeleteCustomerMutation()
+    const [editDetails , setEditDetails] = useState()
+    const {data:customersData , refetch} = useGetAllCustomersQuery({page , search});  
+
+
+    const customerData = customersData?.data?.map((value:valueType)=>({
+      id:value._id, 
+      companyName:value.companyName,
+      companyNumber:value.companyPhone,
+      contactPerson:value.contactPerson,
+      address:value.address,
+      email:value.email,
+      phone:value.phone
+    }))
+ 
+    const handleSearch = (e: { target: { value: any; }; })=>{
+      const value = e.target?.value 
+      setSearch(value)
+    } 
+
+    
+  const handleDelete = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteCustomer(id).then((res) => {
+
+          if (res?.data?.success) {
+            Swal.fire({
+              text: res?.data?.message,
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              refetch();
+            });
+          } else {
+            Swal.fire({
+              title: "Oops",
+              //@ts-ignore
+              text: res?.error?.data?.message,
+              icon: "error",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          }
+        });
+      }
+    });
+  } 
 
     const columns = [
         {
@@ -138,16 +119,16 @@ const Customers = () => {
             render: (_: any, record: any) => (
               <div className='flex gap-2 items-center font-medium'>
                 {/* Edit Link with ID */}
-                <Link to={`/customer-add/${record.id}`}>
-                  <p className='text-primary'>Edit</p>
-                </Link>
-                <p className='text-[#D2410A]'>Delete</p>
+               
+                  <p className='text-primary cursor-pointer' onClick={() => {setEditDetails(record); setOpen(true)}}>Edit</p>
+              
+                <p className='text-[#D2410A] cursor-pointer' onClick={() => handleDelete(record.id)}>Delete</p>
               </div>
             ),
           },
     ]; 
 
-    return (
+    return ( 
         <div className="">
             <div className="flex justify-between items-center w-full">
                 <div className='flex items-center gap-8 w-full'>
@@ -162,20 +143,29 @@ const Customers = () => {
                               style={{
                             fontSize: 24,
                             color: '#292C61',
-                          }}  />}
+                          }}  />} 
+                          onChange={handleSearch}
                     />
                 </div>
                 <div className=" mb-5">
                 <button
             className="bg-primary text-white w-[173px] h-[40px] rounded transition"
-            onClick={() => navigate('/customer-add')}
+            onClick={() => setOpen(true)}
           >
             Add Customer
           </button>
                 </div>
             </div>
-            <Table columns={columns} dataSource={customerData} rowClassName="hover:bg-gray-100" />
-
+            <Table columns={columns} dataSource={customerData}  
+            pagination={{
+              current: page,
+              total: customersData?.pagination?.total || 0,
+              pageSize: 10,
+              onChange: (page) => setPage(page),
+          }} 
+            rowClassName="hover:bg-gray-100" />
+ 
+ <AddCustomerModal open={open} setOpen={setOpen} editDetails={editDetails} setEditDetails={setEditDetails} refetch={refetch} />
         </div>
     );
 };

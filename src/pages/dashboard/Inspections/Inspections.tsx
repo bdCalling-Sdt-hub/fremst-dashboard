@@ -15,10 +15,13 @@ const [page , setPage] = useState(1);
     search: searchTerm,
   }); 
 
-  console.log(searchTerm);
+  console.log(allInspections);
 
   const data = allInspections?.data?.map((value: any, index: number) => ({
-    key: index + 1,
+    key: index + 1, 
+    customerId: value?.customer?._id, 
+    productId:value?.product?._id , 
+    userId: value?._id ,
     username: value?.customer?.contactPerson,
     companyName: value?.customer?.companyName,
     product: value?.product?.name,
@@ -65,9 +68,9 @@ const [page , setPage] = useState(1);
     {
       title: 'Actions',
       key: 'action',
-      render: () => (
+      render: (_: any, record: any) => (
         <div className="text-[#0D7EFF] font-semibold">
-          <Link to="/inspections-details">Details</Link>
+          <Link to={`/inspections-details?customerId=${record.customerId}&productId=${record.productId}&userId=${record.userId}`}>Details</Link>
         </div>
       ),
     },
