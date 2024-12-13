@@ -5,11 +5,6 @@ import { useGetProfileQuery, useUpdateProfileMutation } from '../../../redux/fea
 import { imageUrl } from '../../../redux/base/baseApi';
 import Swal from 'sweetalert2';
 
-interface FormValues {
-    name: string;
-    email: string;
-    image: File | null;
-}
 
 const EditProfile: React.FC = () => {
     const [imagePreview, setImagePreview] = useState<string>('');
@@ -19,7 +14,6 @@ const EditProfile: React.FC = () => {
     const [form] = Form.useForm()
     const userData = profile?.data 
    
-
     useEffect(()=>{ 
         if(userData){
             form.setFieldsValue({email:userData?.email , name:userData?.name}) 

@@ -11,24 +11,24 @@ const AddQuestionModal = ({open , setOpen , productId , stepId , setEditDetails 
 
     useEffect(()=>{ 
         if(editDetails){
-            form.setFieldsValue({question:editDetails?.question , answer:editDetails?.isComment ? "true" : "false"}) 
+            form.setFieldsValue({question:editDetails?.question , isComment:editDetails?.isComment ? "true" : "false"}) 
         }
     },[editDetails , form]) 
 
-    const onFinish =async(values:{question:string , answer:string})=>{
+    const onFinish =async(values:{question:string , isComment:string})=>{
        
         const data = {
             product:productId, 
             stepID:stepId ,
              question:values?.question , 
-             isComment:values?.answer==="true" ? true : false
+             isComment:values?.isComment==="true" ? true : false
         }  
         const editData = {
             product:productId,  
             id:editDetails?._id ,
             stepID:stepId ,
              question:values?.question , 
-             isComment:values?.answer==="true" ? true : false
+             isComment:values?.isComment==="true" ? true : false
         }  
  
         if(editDetails){

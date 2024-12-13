@@ -47,10 +47,35 @@ const inspectionsApi = baseApi.injectEndpoints({
             body:formData
         }
     }
+  }),   
 
+  getAllProductsInspections: build.query({
+    query: (id) => {  
+      return{ 
+        url:  `/question/steps/product/${id}`
+      }
+    }
+  }) , 
 
-  }),  
+  getInpectionsQuestion:build.query({
+    query:(id)=>{
+      return{
+        url:`/question/step/${id}` ,
+      }
+    }
+  }) , 
+
+  createInspection:build.mutation({
+    query:(formData)=>{
+        return{
+            url:`/inspection/create` ,
+            method:"POST" ,
+            body:formData
+        }
+    }
+  })
+
 })
 });
 
-export const { useGetAllInspectionsQuery , useGetInspectionHistoryQuery , useDeleteInspectionHistoryMutation , useAddInspectionHistoryMutation } = inspectionsApi;
+export const { useGetAllInspectionsQuery , useGetInspectionHistoryQuery , useDeleteInspectionHistoryMutation , useAddInspectionHistoryMutation , useGetAllProductsInspectionsQuery , useGetInpectionsQuestionQuery , useCreateInspectionMutation } = inspectionsApi;

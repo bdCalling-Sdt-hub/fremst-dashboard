@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             { path: 'inspections', element: <Inspections /> }, 
             { path: 'inspections-details', element: <InspectionDetails /> },
             { path: 'inspections-create/:category', element: <InspectionsCreate /> },
-            { path: 'inspections-create/:category/:category', element: <AllInspectCategory /> },
+            { path: 'inspections-creates/:category', element: <AllInspectCategory /> },
             { path: 'inspections-create/:category/:category/:subcategory', element: <InspectSubCategory /> },
             { path: 'inspections/submitInspections', element: <SubmitInspections /> },
             { path: 'settings', element: <Profile /> },

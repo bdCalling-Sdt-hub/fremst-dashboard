@@ -10,10 +10,7 @@ const HeaderDashboard = () => {
     const {data} = useGetProfileQuery(undefined)  
     const profileData = data?.data 
 
-    const statusOptions = [
-        { value: 'eng', text: 'ENG', imgSrc: '/eng.svg' },
-       
-      ]; 
+
 
       const location = useLocation();     
 
@@ -41,16 +38,31 @@ const HeaderDashboard = () => {
             <div className="flex items-center justify-end gap-3 h-full">
                 <div>
                     {/* languages */}
-                    <Select defaultValue="eng" className="w-[114px] h-[48px] rounded-md">
-                    {statusOptions.map((option) => (
-        <Option key={option.value} value={option.value}>
-          <div className="flex items-center">
-            <img src={option.imgSrc} alt={option.text} className="w-8 h-4 mr-2" />
-            <span>{option.text}</span>
-          </div>
-        </Option>
-      ))}
-                    </Select>
+                    <Select
+                // value={selectedLanguage} 
+                style={{ width: 120 , height:"50px" }}
+                // onChange={handleSelectLanguage}
+              >
+                <Option value="en">
+                  <div style={{ display: "flex", alignItems: "center", height:"40px"  }}>
+                    <img
+                      src="https://cdn.britannica.com/29/22529-004-ED1907BE/Union-Flag-Cross-St-Andrew-of-George.jpg"
+                      alt="English"
+                      style={{ marginRight: 8, width: 16, height: 16 }}
+                    />
+                    English
+                  </div>
+                </Option>
+                <Option value="es">
+                  <div style={{ display: "flex", alignItems: "center" , height:"40px" }}>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png"
+                      style={{ marginRight: 8, width: 16, height: 16 }}
+                    />
+                    German
+                  </div>
+                </Option>
+              </Select> 
                 </div>
                 <div>
                     {/* profile */}

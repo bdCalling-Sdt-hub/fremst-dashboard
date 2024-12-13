@@ -1,122 +1,121 @@
-import React, { useState } from 'react';
-import {  Button, Form, Input, Radio } from 'antd';
-import { Link, useParams } from 'react-router-dom';
-import { PiImageThin } from 'react-icons/pi';
-import CommonInput from '../../../components/shared/CommonInput';
+import { Button, Form, Input, Radio } from 'antd';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GoArrowLeft } from 'react-icons/go';
+import { useGetInpectionsQuestionQuery } from '../../../redux/features/Dashboard/inspectionsApi';
+import { useInspection } from '../../../context/InspectionContext';
+import { imageUrl } from '../../../redux/base/baseApi';
 
-const InspectSubCategory = () => { 
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [questions, setQuestions] = useState([{ id: 1, text: '', commentEnabled: false }]);
-    const { category , subCategory } = useParams();  
+const InspectSubCategory = () => {
+  const location = useLocation(); 
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const product = queryParams.get('product');
+  const { category , subcategory } = useParams();
+  const { data } = useGetInpectionsQuestionQuery(id);
+  console.log(subcategory); 
+  const { updateStepData } = useInspection();
 
+  const questions = data?.data?.map((value: { _id: string, question: string, isComment: boolean }) => ({
+    id: value?._id,
+    name: value?.question,
+    isComment: value?.isComment,
+  }));
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => setImageUrl(reader.result as string);
-        reader.readAsDataURL(file);
-      }
-    };
+  const handleSaveStep = (values: any) => {
+    const answers = questions?.map((question: { name: string; isComment: boolean; id: string }, index: number) => ({
+      question: question.name,
+      comment: values[`comment_${index}`] || '',
+      isYes: values[`isYes_${index}`] === 'true',
+    })) || [];
   
-    const handleAddQuestion = () => {
-      setQuestions([
-        ...questions,
-        { id: questions.length + 1, text: '', commentEnabled: false }
-      ]);
-    }; 
+    updateStepData(subcategory || 'defaultStep', answers); 
+    navigate(`/inspections-creates/${category}?id=${product}`);
+  };
 
-    return ( 
-        <div className="p-6 bg-gray-100  w-full">
+  return (
+    <div className="p-6 bg-gray-100 w-full">
+      <Link
+        to={`/inspections-creates/${category}?id=${product}`}
+        className="text-[16px] flex items-center gap-1 font-medium "
+      >
+        <GoArrowLeft size={28} />
+        <span className="font-medium">Back</span>
+      </Link>
 
-
-            
-             <Link to={`/inspections-create/${category}/${category}`} className="text-[16px] flex items-center gap-1 font-medium w-[50px]"> <span> <GoArrowLeft size={28} /></span> <span className='font-medium'> Back </span></Link>
-    
-  
-        <Form layout="vertical" className='w-full mt-5'> 
-        <div className='flex w-full gap-10'> 
-          <div className='w-[600px]'>
-  
-          {/* Questions Section */}
-          {questions.map((question) => (
-            <div key={question.id} className="mb-6"> 
-            <CommonInput label={`Question - ${question.id < 10 ? `0${question.id}` : question.id}`} name={`question - ${question.id < 10 ? `0${question.id}` : question.id}`} />
-  
-              <div className="flex items-center space-x-4">
-                <Form.Item label="Comment Field"> 
-                  <Input  style={{
-              border: "1px solid #BABABA",
-              height: "48px",
-              borderRadius: "8px",
-              outline: "none",
-              width: "100%",
-              padding: "8px",  
-              background:"white"  ,   
-            }}  />
+      <Form onFinish={handleSaveStep} className="w-full mt-5" layout='vertical'>
+        <div className="flex w-full gap-10">
+          <div className="w-[600px]">
+            {questions?.map((question:{ id: string, name: string, isComment: boolean }, index:number) => (
+              <div key={question.id} className="mb-6">
+                <Form.Item
+                  name={`question_${index}`}
+                  initialValue={question.name}
+                  label={`Question - ${index + 1}`}
+                >
+                  <Input style={{
+                        border: "1px solid #BABABA",
+                        height: "48px",
+                        borderRadius: "8px",
+                        outline: "none",
+                        width: "100%",
+                        padding: "8px",  
+                        background: "white",   
+                    }} 
+                     readOnly />
                 </Form.Item>
-  
-                <div className="flex items-center space-x-2 mt-1">
-                  <Radio.Group>
-                    <Radio value="yes" className="text-[#45C518]">YES</Radio> <br />
-                    <Radio value="no" className="text-[#FF3E3E]">NO</Radio>
-                  </Radio.Group>
+
+                <div className="flex items-center space-x-4">
+                  <Form.Item
+                    name={`comment_${index}`}
+                    label="Comment Field"
+                    rules={[{ required: question.isComment, message: 'Comment is required' }]}
+                  >
+                    <Input 
+                    style={{
+                      border: "1px solid #BABABA",
+                      height: "48px",
+                      borderRadius: "8px",
+                      outline: "none",
+                      width: "100%",
+                      padding: "8px",  
+                      background: "white",   
+                  }}  disabled={!question.isComment} />
+                  </Form.Item>
+
+                  <Form.Item name={`isYes_${index}`}>
+                    <Radio.Group>
+                      <Radio value="true">YES</Radio>
+                      <Radio value="false">NO</Radio>
+                    </Radio.Group>
+                  </Form.Item>
                 </div>
               </div>
-            </div>
-          ))} 
-          
-          <Button
-            
-            onClick={handleAddQuestion}
-            className="flex items-center space-x-2 mb-8 border-0 "
-          >
-            <span className=' font-semibold text-primary'>+ Add Question</span>
-          </Button>
-          </div>  
-          
-            {/* Image Upload Section */}
-            <div className="mb-8 w-full" >
+            ))}
+          </div>
+
+          <div className="w-full">
             <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
-            <label
-                          htmlFor="image"
-                          style={{ display: "block", }}
-                          className="p-3 border rounded-lg bg-white w-[431px] "
-                      >
-                          <Form.Item name="imagess"
-                          >
-                              <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200 ">
-                                  {imageUrl ? (
-                                      <img src={imageUrl} style={{ height: "120px", width: "120px", borderRadius: 10 , objectFit:"contain" }} alt="" />
-                                  )
-                                      : (
-                                          <PiImageThin className="text-8xl flex items-center justify-center text-[#666666] font-[400]" />
-                                      )}
-                              </div>
-  
-                              <div className="hidden">
-                                  <Input
-                                      id="image"
-                                      type="file"
-                                      onInput={handleImageChange}
-  
-                                  />
-                              </div>
-                          </Form.Item>
-                      </label>
+            <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200">
+              <img
+                src={
+                  data?.stepImage?.startsWith('https')
+                    ? data?.stepImage
+                    : `${imageUrl}${data?.stepImage}`
+                }
+                alt="Step"
+                style={{ height: '120px', width: '120px', borderRadius: 10, objectFit: 'contain' }}
+              />
+            </div>
           </div>
-   
-          </div>
-          {/* Next Button */}
-          <Button type="primary" className=" bg-primary h-[48px] w-[360px] text-white">
-            Next
-          </Button>
-        </Form> 
-  
-  
-      </div>
-    );
+        </div>
+
+        <Button type="primary" htmlType="submit" className="bg-primary h-[48px] w-[360px] text-white">
+          Save & Next
+        </Button>
+      </Form>
+    </div>
+  );
 };
 
 export default InspectSubCategory;

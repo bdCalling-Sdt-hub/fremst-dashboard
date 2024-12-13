@@ -15,7 +15,8 @@ const InspectionsCreate = () => {
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
 
- 
+
+
   useEffect(() => {
     if (!inspectionData.product && product) {
       updateInspectionData('product', product);
@@ -27,10 +28,6 @@ const InspectionsCreate = () => {
   const onFinish = (values: any) => {
     const protocolId = Array.from({ length: 6 }, () => Math.floor(Math.random() * 100) + 1).join('');
 
-    if (!inspectionData.customer && product) {
-      updateInspectionData('customer', values.customer);
-    } 
-
     updateInspectionData('customer', values.customer);
     updateInspectionData('sku', values.sku);
     updateInspectionData('enStandard', values.enStandard);
@@ -38,37 +35,34 @@ const InspectionsCreate = () => {
     updateInspectionData('storageLocation', values.storageLocation);
     updateInspectionData('protocolId', protocolId);
 
-    
-
- 
-    navigate(`/inspections-create/${category}/${product}`);
+    navigate(`/inspections-creates/${category}?id=${product}`);
   };
- 
-  console.log(inspectionData);
+
+
   return (
     <div className='w-full'>
-      <div className='flex items-center gap-2 pb-[24px]'> 
-        <Link to="/products"> 
+      <div className='flex items-center gap-2 pb-[24px]'>
+        <Link to="/products">
           <BsArrowLeft size={26} />
-        </Link> 
+        </Link>
         <p className='text-[18px] font-semibold'>Create Inspections</p>
-      </div> 
+      </div>
 
       {/* Form */}
-      <Form layout='vertical' className='w-1/2' onFinish={onFinish}>  
+      <Form layout='vertical' className='w-1/2' onFinish={onFinish}>
         <div className='pb-[5px]'>
           <CommonInput name='serialNo' label='Serial No' />
           <CommonInput name='enStandard' label='En Standard' />
           <CommonInput name='sku' label='Product SKU' />
-          <CommonInput name='storageLocation' label='Storage Location' /> 
+          <CommonInput name='storageLocation' label='Storage Location' />
 
           <Form.Item
             name="customer"
             label={<p className='text-[14px] font-semibold'>Select Customer</p>}
-            rules={[{ required: true, message: `Customer is required` }]} 
+            rules={[{ required: true, message: `Customer is required` }]}
           >
             <Select
-              placeholder="Select a customer" 
+              placeholder="Select a customer"
               style={{ width: "100%", height: "48px" }}
               showSearch
               optionFilterProp="children"
@@ -80,9 +74,9 @@ const InspectionsCreate = () => {
               ))}
             </Select>
           </Form.Item>
-        </div> 
+        </div>
 
-        <Form.Item> 
+        <Form.Item>
           <button type="submit" className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
             Next
           </button>
