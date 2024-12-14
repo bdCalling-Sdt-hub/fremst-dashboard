@@ -34,7 +34,7 @@ const router = createBrowserRouter([
             { path: 'products-edit/:category', element: <ProductsEditCategory /> },
             { path: 'products-edit/:category/:subCategory', element: <EditSubCategory /> },
             { path: 'customers', element: <Customers /> },
-            { path: 'users', element: <Users /> },
+            { path: 'employees', element: <Users /> },
             { path: 'inspections', element: <Inspections /> }, 
             { path: 'inspections-details', element: <InspectionDetails /> },
             { path: 'inspections-create/:category', element: <InspectionsCreate /> },

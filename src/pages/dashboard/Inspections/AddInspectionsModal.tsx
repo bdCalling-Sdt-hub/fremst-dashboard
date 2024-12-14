@@ -4,6 +4,7 @@ import type { UploadProps } from "antd";
 import { useAddInspectionHistoryMutation } from "../../../redux/features/Dashboard/inspectionsApi";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 
 const AddInspectionsModal = ({
@@ -18,7 +19,8 @@ const AddInspectionsModal = ({
   customerId: string | null;
 }) => {
   const [addInspectionHistory, { isLoading , error , isSuccess , data , isError  }] = useAddInspectionHistoryMutation();
-const [form] = Form.useForm()
+  const [form] = Form.useForm() 
+  const { t } = useTranslation();
   const props: UploadProps = {
     beforeUpload: (file) => {
       const isPDF = file.type === "application/pdf";
@@ -79,7 +81,7 @@ const [form] = Form.useForm()
       open={open}
       onCancel={() => setOpen(false)}
       width={500}
-      title={<p className="text-[18px] font-semibold">Add Inspection Report</p>}
+      title={<p className="text-[18px] font-semibold">{t("addInspectionReport")}</p>}
       footer={null}
     >
       <div className="w-full p-5 px-0">

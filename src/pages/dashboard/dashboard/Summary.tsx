@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
 export interface Root {
@@ -9,16 +10,17 @@ export interface Root {
 
 
 const Summary = ({homeData}:{homeData:Root}) => {  
+    const {t} = useTranslation(); 
 
     const data=[
         {
             icon: <IoPersonCircleOutline size={32} /> , 
-            title: "Customer" ,
+            title: t("customer")  ,
             total: homeData?.customers
         } , 
         {
             icon: <PiDotsNineBold size={32} /> , 
-            title: "Products" ,
+            title: t("products") ,
             total: homeData?.products
         } , 
     ]

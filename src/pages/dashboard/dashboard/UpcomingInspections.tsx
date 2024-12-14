@@ -4,6 +4,7 @@ import { RxCross2, RxPlus } from "react-icons/rx";
 import { imageUrl } from "../../../redux/base/baseApi";
 import moment from "moment";
 import InspectionsDetailsModal from "./InspectionsDetailsModal";
+import { useTranslation } from "react-i18next";
 
 export interface Root {
   customers: number;
@@ -39,7 +40,7 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
   ); 
 
   const [itemDetails, setItemDetails] = useState(null) 
-  console.log(itemDetails);
+ const {t} = useTranslation()
 
   useEffect(() => {
     if (homeData?.inspections) {
@@ -55,11 +56,11 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
   const buttons = [
     {
       id: "ascending",
-      label: "Ascending date",
+      label: t("ascending"),
     },
     {
       id: "descending",
-      label: "Descending date",
+      label: t("descending"),
     },
   ];
 
@@ -71,8 +72,8 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
     <div className="w-full">
       {/* Header */}
       <div className="flex items-center space-x-7 mb-4 mt-[44px] w-1/2">
-        <h2 className="text-[16px] font-[600]">Upcoming inspections</h2>
-        <p className="text-gray-600 font-[600] text-[12px]">Filter by</p>
+        <h2 className="text-[16px] font-[600]">{t("upcoming")}</h2>
+        <p className="text-gray-600 font-[600] text-[12px]">{t("filter")}</p>
         <div className="flex gap-2">
           {buttons.map((button) => (
             <button

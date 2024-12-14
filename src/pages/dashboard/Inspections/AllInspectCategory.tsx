@@ -2,6 +2,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useGetAllProductsInspectionsQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import { imageUrl } from '../../../redux/base/baseApi';
+import { useTranslation } from 'react-i18next';
 
 const AllInspectCategory = () => { 
     const navigate = useNavigate() 
@@ -10,7 +11,7 @@ const AllInspectCategory = () => {
       const queryParams = new URLSearchParams(location.search); 
       const id = queryParams.get('id');  
       const {data} = useGetAllProductsInspectionsQuery(id) 
-   
+   const {t} = useTranslation();
 
       const products = data?.data?.map((value: { name: string, stepImage: string , _id: string }) => ({ 
         id:value?._id ,
@@ -25,7 +26,7 @@ const AllInspectCategory = () => {
         <div className="p-6 font-sans">
  
  <div className='flex  items-center justify-between mb-5'>
-        <h2 className="text-lg font-semibold mb-4">Inspect by Category</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("inspectByCategory")}</h2>
         <button onClick={() => navigate(`/inspections/submitInspections`)}  className="bg-primary text-white w-[170px] h-[40px] rounded  transition">
                 Submit Inspections
               </button>

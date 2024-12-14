@@ -5,17 +5,17 @@ import { useState } from 'react';
 import { useGetAllInspectionsQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import moment from 'moment';
 import { imageUrl } from '../../../redux/base/baseApi';
+import { useTranslation } from 'react-i18next';
 
 const Inspections = () => {
   const [searchTerm, setSearchTerm] = useState('');
-const [page , setPage] = useState(1);
-
+  const [page , setPage] = useState(1);
+  const {t} = useTranslation()
   const { data: allInspections, isLoading } = useGetAllInspectionsQuery({
     page: page,
     search: searchTerm,
   }); 
 
-  console.log(allInspections);
 
   const data = allInspections?.data?.map((value: any, index: number) => ({
     key: index + 1, 
@@ -86,7 +86,7 @@ const [page , setPage] = useState(1);
   return (
     <div>
       <div className="flex items-center gap-8 w-full mb-5">
-        <h1 className="text-xl text-primary font-semibold">Inspection List</h1>
+        <h1 className="text-xl text-primary font-semibold">{t('inspectionList')}</h1>
         <Input
           style={{
             maxWidth: 335,

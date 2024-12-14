@@ -7,7 +7,8 @@ import moment from 'moment';
 import { useDeleteInspectionHistoryMutation, useGetInspectionHistoryQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import Swal from 'sweetalert2';
 import AddInspectionsModal from './AddInspectionsModal';
-import { useState } from 'react';
+import { useState } from 'react';       
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text, Link } = Typography;
 
@@ -24,7 +25,7 @@ const InspectionDetails = () => {
   const { data: inspection } = useInspectionByIdQuery(userId)
   const [deleteInspectionHistory] = useDeleteInspectionHistoryMutation()
   const { data: inspectionsHistory, refetch } = useGetInspectionHistoryQuery({ customerId, productId })
-
+ const {t} = useTranslation()
   const inspectionDetails = inspection?.data
 
   const inspectionHistory = inspectionsHistory?.data?.history?.map((value: any, index: number) => ({
@@ -189,7 +190,7 @@ const InspectionDetails = () => {
       </div>
 
       {/* Inspection History Table */}
-      <Title level={3} className="mb-4 text-center">Inspection history</Title>
+      <Title level={3} className="mb-4 text-center">{t("inspectionHistory")}</Title>
       <Table
         columns={columns}
         dataSource={inspectionHistory}

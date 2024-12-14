@@ -5,6 +5,7 @@ import { useGetAllCustomersQuery } from '../../../redux/features/Dashboard/custo
 import { BsArrowLeft } from 'react-icons/bs';
 import { Form, Select } from 'antd';
 import CommonInput from '../../../components/shared/CommonInput';
+import { useTranslation } from 'react-i18next';
 
 const InspectionsCreate = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const InspectionsCreate = () => {
   const product = queryParams.get('id');
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
-
+ const {t} = useTranslation();
 
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const InspectionsCreate = () => {
         <Link to="/products">
           <BsArrowLeft size={26} />
         </Link>
-        <p className='text-[18px] font-semibold'>Create Inspections</p>
+        <p className='text-[18px] font-semibold'>{t("createInspection")}</p>
       </div>
 
       {/* Form */}

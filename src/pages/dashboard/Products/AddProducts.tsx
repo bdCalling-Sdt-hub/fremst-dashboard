@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { PiImageThin } from "react-icons/pi";
 import { useAddNewProductMutation } from "../../../redux/features/Dashboard/productsApi";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 
 const AddProducts = () => {  
@@ -13,7 +14,7 @@ const AddProducts = () => {
     const [imgFile, setImgFile] = useState(null);
     const [imageUrl, setImageUrl] = useState()   
     const [addNewProduct , {isLoading , isError , isSuccess , data , error}] = useAddNewProductMutation()
-
+const {t} = useTranslation()
     useEffect(() => {
         if (isSuccess) { 
           if (data) {
@@ -69,7 +70,7 @@ const AddProducts = () => {
         <div className='flex items-center gap-2 pb-[24px]'> 
           <Link to="/products"> <BsArrowLeft size={26} />
           </Link> 
-        <p className='text-[18px] font-semibold' > Create New Product Inspection </p>
+        <p className='text-[18px] font-semibold' > {t("createNewProductInspection")} </p>
         </div> 
   
         {/* form   */} 

@@ -4,13 +4,14 @@ import CommonInput from '../../components/shared/CommonInput';
 import { useCreateUserMutation } from '../../redux/features/Dashboard/userApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 
 const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>void}) => { 
 
   const [form] = Form.useForm(); 
   const [createUser , {isLoading , isError , isSuccess , data , error}] = useCreateUserMutation() 
-
+ const {t} = useTranslation()
   useEffect(() => {
     if (isSuccess) { 
       if (data) {
@@ -49,7 +50,7 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
     open={open}
     onCancel={() => setOpen(false)}
     width={500}
-    title={<p className="text-[18px] font-semibold">Add Employee</p>}
+    title={<p className="text-[18px] font-semibold">{t("addEmployee")}</p>}
     footer={null}
   >
     <div className='w-full'>

@@ -3,13 +3,14 @@ import { useGetAllUsersQuery, useHoldUserMutation } from '../../redux/features/D
 import { useState } from 'react';
 import AddUserModal from './AddUserModal';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 const Users = () => {  
     const [page , setPage] = useState(1) 
     const [open , setOpen] = useState(false)
     const {data:allUsers , refetch} = useGetAllUsersQuery(page)   
     const [holdUser] = useHoldUserMutation()
- 
+    const {t} = useTranslation()
 
     const handleHold =async(id:string)=>{
       
@@ -91,7 +92,7 @@ await holdUser(id).then((res)=>{
         <div>
             <Flex className="my-2" vertical={false} gap={10} align="center" justify="space-between">
                 <div>
-                    <h1 className="text-3xl text-primary font-semibold">Employees list</h1>
+                    <h1 className="text-3xl text-primary font-semibold">{t("employeesList")}</h1>
                 </div>
 
                 <div
@@ -103,7 +104,7 @@ await holdUser(id).then((res)=>{
             className="bg-primary text-white w-[173px] h-[40px] rounded transition"
             onClick={()=>setOpen(true)}  
           >
-            Add User
+            Add employee
           </button>
                 </div>
             </Flex>

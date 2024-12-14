@@ -5,6 +5,7 @@ import { useDeleteCustomerMutation, useGetAllCustomersQuery } from '../../redux/
 import { useState } from 'react';
 import AddCustomerModal from './AddCustomerModal';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
  
 interface valueType{
   _id:string|number|null ,
@@ -25,7 +26,7 @@ const Customers = () => {
     const [deleteCustomer] = useDeleteCustomerMutation()
     const [editDetails , setEditDetails] = useState()
     const {data:customersData , refetch} = useGetAllCustomersQuery({page , search});  
-
+  const {t} = useTranslation()
 
     const customerData = customersData?.data?.map((value:valueType)=>({
       id:value._id, 
@@ -132,7 +133,7 @@ const Customers = () => {
         <div className="">
             <div className="flex justify-between items-center w-full">
                 <div className='flex items-center gap-8 w-full'>
-                    <h1 className="text-xl text-primary font-semibold">Customers list</h1> 
+                    <h1 className="text-xl text-primary font-semibold">{t("customersList")}</h1> 
                     <Input
                         style={{
                             maxWidth: 335,

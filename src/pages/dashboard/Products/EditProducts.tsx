@@ -6,12 +6,14 @@ import { useState } from 'react';
 import { useGetAllProductsQuery } from '../../../redux/features/Dashboard/productsApi';
 import { imageUrl } from '../../../redux/base/baseApi';
 import { Pagination } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const EditProducts = () => {  
     const navigate = useNavigate() 
     const [page, setPage] = useState(1)
     const { data: allProducts } = useGetAllProductsQuery(page)
-  
+    const {t} = useTranslation(); 
+
     const products = allProducts?.data?.map((value: { name: string, image: string , _id: string }) => ({ 
       id:value?._id ,
       name: value?.name,
@@ -26,10 +28,10 @@ const EditProducts = () => {
           <Link to="/products"> <BsArrowLeft size={26} />
           </Link>  
           
-        <p className='text-[18px] font-semibold' > Edit  product inspection </p>
+        <p className='text-[18px] font-semibold' > {t("editInspection")} </p>
         </div>   
 
-        <h2 className="text-lg font-semibold mb-4">Edit products</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("editProducts")}</h2>
       <div className="flex flex-col gap-3">
         {products?.map((product: { name: string, icon: string , id: string }, index:number) => (
           <div key={index} className="flex items-center bg-[#DEE5F1] h-[64px] p-4 ps-[23px] pe-[32px] rounded shadow-md"> 

@@ -7,6 +7,7 @@ import { useDeleteQuestionMutation, useGetAllQuestionsQuery } from '../../../red
 import { imageUrl } from '../../../redux/base/baseApi';
 import { MdDelete } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 const EditSubCategory = () => {
 
@@ -19,7 +20,7 @@ const EditSubCategory = () => {
   const { category, subCategory } = useParams();
   const {data:allQuestions , refetch} = useGetAllQuestionsQuery(stepId) 
 const [deleteQuestion] = useDeleteQuestionMutation()
-
+ 
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -66,7 +67,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
       <Breadcrumb
         items={[
           {
-            title: <Link to="/products-edit" className="text-[16px] font-medium">Edit Product Inspection</Link>,
+            title: <Link to="/products-edit" className="text-[16px] font-medium">Edit product inspection</Link>,
           },
           {
             title: <Link to={`/products-edit/${category}?id=${productId}`} className="text-[16px] font-medium">Safety Harness</Link>,
