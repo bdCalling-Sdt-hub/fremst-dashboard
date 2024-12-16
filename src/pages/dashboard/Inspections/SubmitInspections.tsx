@@ -5,12 +5,35 @@ import { useInspection } from "../../../context/InspectionContext";
 import { jsPDF } from "jspdf";
 import { useCreateInspectionMutation } from "../../../redux/features/Dashboard/inspectionsApi";
 import moment from "moment";
+import Swal from "sweetalert2";
+import "jspdf-autotable";
 
 const SubmitInspections = () => {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const { updateInspectionData, inspectionData } = useInspection();
-  const [createInspection, { isLoading }] = useCreateInspectionMutation();
+  const [createInspection, { isLoading, isError, isSuccess, data, error }] = useCreateInspectionMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: data?.message,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    }
+    if (isError) {
+      Swal.fire({
+        //@ts-ignore
+        text: error?.data?.message,
+        icon: "error",
+      });
+    }
+  }, [isSuccess, isError, error, data]);
 
   const handleChange = (e: any) => {
     const file = e.target.files[0];
@@ -35,7 +58,7 @@ const SubmitInspections = () => {
 
   const handleNextInspection = (months: number) => {
     const currentDate = moment();
-    const nextInspectionDate = currentDate.add(months, 'months');
+    const nextInspectionDate = currentDate.add(months, "months");
     const formattedDate = nextInspectionDate.format("YYYY-MM-DD HH:mm:ss");
     updateInspectionData("nextInspectionDate", formattedDate);
   };
@@ -46,74 +69,51 @@ const SubmitInspections = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text("Inspection Report", 10, 10);
-    
+    const inspectionDate = moment().format("YYYY-MM-DD");
+
+
+    doc.addImage("/pdflogo.png" , "PNG", 10, 10, 30, 20);
+    doc.setFontSize(24);
+    doc.text("Inspection Report - Denton Maddox", 60, 20);
+
     doc.setFontSize(12);
-    
-    const customer = inspectionData?.customer || "Unknown Customer";
-    const product = inspectionData?.product || "Unknown Product";
-    const sku = inspectionData?.sku || "Unknown SKU";
-    const enStandard = inspectionData?.enStandard || "Unknown Standard";
-    const serialNo = inspectionData?.serialNo || "Unknown Serial No";
-    const storageLocation = inspectionData?.storageLocation || "Unknown Location";
-    const lastInspectionDate = moment(inspectionData?.lastInspectionDate).format('YYYY-MM-DD HH:mm:ss') || "Unknown Date";
-    const nextInspectionDate = moment(inspectionData?.nextInspectionDate).format('YYYY-MM-DD HH:mm:ss') || "Unknown Date";
-    
-    doc.text(`Customer: ${customer}`, 10, 20);
-    doc.text(`Product: ${product}`, 10, 30);
-    doc.text(`SKU: ${sku}`, 10, 40);
-    doc.text(`EN Standard: ${enStandard}`, 10, 50);
-    doc.text(`Serial No: ${serialNo}`, 10, 60);
-    doc.text(`Storage Location: ${storageLocation}`, 10, 70);
-    doc.text(`Last Inspection Date: ${lastInspectionDate}`, 10, 80);
-    doc.text(`Next Inspection Date: ${nextInspectionDate}`, 10, 90);
-  
-    const summery = inspectionData?.summery || "No Summary Available";
-    doc.text("Inspection Summary:", 10, 100);
-    doc.text(summery, 10, 110);
-  
-    const controlPoints = inspectionData?.step || [];
-    let yPos = 130;
-  
-    controlPoints.forEach((step) => {
-      doc.text(`${step.name}:`, 10, yPos);
-      yPos += 10;
-  
-      step.answers.forEach((answer) => {
-        const question = answer.question || "No Question";
-        const comment = answer.comment || "No Comment";
-        const response = answer.isYes ? "YES" : "NO";
-  
-        doc.text(`Q: ${question}`, 10, yPos);
-        yPos += 7;
-        doc.text(`Response: ${response}`, 10, yPos);
-        yPos += 7;
-        doc.text(`Comment: ${comment}`, 10, yPos);
-        yPos += 10;
-      });
+    doc.text(`Customer: ${inspectionData.customer || "Unknown"}`, 10, 40);
+    doc.text(`Protocol ID: 67597f48c4d3de3ccb85a93b`, 120, 40);
+    doc.text(`Date: ${inspectionDate}`, 10, 50);
+    doc.text(`Product Name: Denton Maddox`, 120, 50);
+    doc.text(`Product SKU: abcd`, 120, 80);
+    doc.text(`Storage Location: Earth`, 120, 60);
+    doc.text(`Product Brand: Minus esse id minus`, 120, 90);
+
+    // Dynamically Generate Table Body Data
+    const tableBody = inspectionData?.step?.flatMap((step) =>
+      step.answers.map((answer) => [
+        answer.question || "N/A", // Control Points (Question)
+        answer.isYes ? "YES" : "NO", // OK (Boolean to YES/NO)
+        answer.comment || "N/A", // Comments
+      ])
+    ) || [];
+
+    // Control Points Table
+    doc.autoTable({
+      startY: 90,
+      head: [["Control Points", "OK", "Comments"]],
+      body: tableBody,
+      theme: "grid",
+      styles: { align: "center", fontSize: 10 },
+      headStyles: { fillColor: [100, 100, 255] },
+      columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 30 }, 2: { cellWidth: 90 } },
     });
-  
-    const approvalStatus = inspectionData?.isApproved ? "Approved" : "Rejected";
-    doc.text(`Approval Status: ${approvalStatus}`, 10, yPos);
-    yPos += 10;
-  
-    if (imgFile) {
-      const imgURL = URL.createObjectURL(imgFile);
-      doc.addImage(imgURL, "PNG", 10, yPos, 50, 50);
-      yPos += 60;
-    }
-    const pdfBase64 = doc.output('datauristring');
-  
-   
-    const byteCharacters = atob(pdfBase64.split(',')[1]);
-    const byteArrays = [];
-    for (let offset = 0; offset < byteCharacters.length; offset++) {
-      const byte = byteCharacters.charCodeAt(offset);
-      byteArrays.push(byte);
-    }
-    const pdfBlob = new Blob([new Uint8Array(byteArrays)], { type: 'application/pdf' });
-  
+
+    // Footer Content
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text("The equipment is approved as fall protection equipment", 10, doc.lastAutoTable.finalY + 10);
+    doc.text("The next inspection should take place within 0 months from the inspection", 10, doc.lastAutoTable.finalY + 20);
+    doc.text(`Inspection date & place: ${inspectionDate}`, 10, doc.lastAutoTable.finalY + 30);
+
+    // Generate PDF as Blob or Download
+    const pdfBlob = doc.output("blob");
     return pdfBlob;
   };
 
@@ -125,7 +125,7 @@ const SubmitInspections = () => {
     }
     formData.append("data", JSON.stringify(inspectionData));
 
-    const pdfBlob = generatePDF(); 
+    const pdfBlob = generatePDF();
     console.log(pdfBlob, "generated.pdf");
     formData.append("pdfReport", pdfBlob, "generated.pdf");
 
@@ -143,7 +143,7 @@ const SubmitInspections = () => {
         <div className="w-full">
           <p className="text-[14px] font-semibold py-2">Inspection Summary</p>
           <Input.TextArea rows={8} className="w-full rounded-lg resize-none" onChange={handleSummaryChange} />
-          
+
           <div className="flex gap-5 my-10">
             <button
               className="w-1/2 border border-[#229E45] text-[#229E45] hover:bg-[#229E45] hover:text-white h-[45px] rounded-md font-medium"
@@ -185,7 +185,7 @@ const SubmitInspections = () => {
 
         <div className="mb-8 w-full">
           <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
-          <label htmlFor="image" className="p-3   ">
+          <label htmlFor="image" className="p-3">
             <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200 bg-white">
               {imageUrl ? (
                 <img src={imageUrl} style={{ height: "120px", width: "120px", borderRadius: 10, objectFit: "contain" }} alt="" />

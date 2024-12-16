@@ -129,7 +129,7 @@ const {t} = useTranslation()
    <Form.Item > 
 
           <button type="submit" className="bg-primary text-white w-[500px] h-[50px] text-lg rounded-lg mt-5">
-     {isLoading ? "Loading..." : "Create"}     Create
+     {isLoading ? "Loading..." : "Create"}  
           </button>
    </Form.Item>
         </Form>
