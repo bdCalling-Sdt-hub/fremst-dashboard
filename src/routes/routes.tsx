@@ -20,11 +20,12 @@ import InspectionsCreate from '../pages/dashboard/Inspections/InspectionsCreate'
 import AllInspectCategory from '../pages/dashboard/Inspections/AllInspectCategory';
 import InspectSubCategory from '../pages/dashboard/Inspections/InspectSubCategory';
 import SubmitInspections from '../pages/dashboard/Inspections/SubmitInspections';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element:  <PrivateRoute> <App /> </PrivateRoute> ,
         errorElement: <ErrorPage />,
         children: [
             { path: '', element: <Dashboard /> },

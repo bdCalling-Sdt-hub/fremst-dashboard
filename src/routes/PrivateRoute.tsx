@@ -7,8 +7,6 @@ const PrivateRoute = ({ children }:{children: React.ReactNode}) => {
   const location = useLocation();
   const { data:profile, isLoading, isFetching, isError } = useGetProfileQuery(undefined); 
   
-
-
   if (isLoading || isFetching) {
     return <div>Loading...</div>;
   }
