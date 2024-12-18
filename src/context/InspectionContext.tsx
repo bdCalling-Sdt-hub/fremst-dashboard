@@ -21,6 +21,9 @@ interface InspectionData {
   summery: string;
   isApproved: boolean;
   protocolId: string;
+  brand: string;
+  username: string;
+  companyName: string;
   lastInspectionDate: string;
   nextInspectionDate: string;
   step: Step[];
@@ -40,12 +43,15 @@ export const InspectionProvider = ({ children }: { children: React.ReactNode }) 
     customer: '',
     sku: '',
     enStandard: '',
-    serialNo: '',
+    serialNo: '', 
+    brand: '', 
+    companyName: '', 
+    username: '',
     storageLocation: '',
     summery: '',
     isApproved: false,
     protocolId: '',
-    lastInspectionDate: '',
+    lastInspectionDate: '', 
     nextInspectionDate: '',
     step: [],
   });

@@ -3,19 +3,22 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useInspection } from '../../../context/InspectionContext';
 import { useGetAllCustomersQuery } from '../../../redux/features/Dashboard/customersApi';
 import { BsArrowLeft } from 'react-icons/bs';
-import { Form, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import CommonInput from '../../../components/shared/CommonInput';
 import { useTranslation } from 'react-i18next';
+import { useGetProfileQuery } from '../../../redux/features/auth/authApi';
 
 const InspectionsCreate = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const { data: profile } = useGetProfileQuery(undefined)
   const { inspectionData, updateInspectionData } = useInspection();
+  //console.log(profile?.data?.name);
   const product = queryParams.get('id');
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
- const {t} = useTranslation();
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -33,6 +36,9 @@ const InspectionsCreate = () => {
     updateInspectionData('sku', values.sku);
     updateInspectionData('enStandard', values.enStandard);
     updateInspectionData('serialNo', values.serialNo);
+    updateInspectionData('brand', values.brand);
+    updateInspectionData('companyName', values.companyName);
+    updateInspectionData('username', values.username);
     updateInspectionData('storageLocation', values.storageLocation);
     updateInspectionData('protocolId', protocolId);
 
@@ -50,12 +56,38 @@ const InspectionsCreate = () => {
       </div>
 
       {/* Form */}
-      <Form layout='vertical' className='w-1/2' onFinish={onFinish}>
+      <Form layout='vertical' className='w-1/2' onFinish={onFinish}
+        initialValues={{
+          username: profile?.data?.name,
+        }} >
         <div className='pb-[5px]'>
           <CommonInput name='serialNo' label='Serial No' />
           <CommonInput name='enStandard' label='En Standard' />
           <CommonInput name='sku' label='Product SKU' />
           <CommonInput name='storageLocation' label='Storage Location' />
+          <CommonInput name='brand' label='Brand' />
+          <CommonInput name='companyName' label='Company Name' />
+          <Form.Item
+            name="username"
+            label={<p className='text-[14px] font-semibold'>User Name</p>}
+
+          >
+            <Input
+
+              style={{
+                border: "1px solid #BABABA",
+                height: "48px",
+                borderRadius: "8px",
+                outline: "none",
+                width: "100%",
+                padding: "8px",
+                background: "white",
+              }}
+            
+              readOnly
+            />
+          </Form.Item>
+
 
           <Form.Item
             name="customer"

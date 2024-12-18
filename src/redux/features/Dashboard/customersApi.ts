@@ -38,10 +38,16 @@ const customersApi = baseApi.injectEndpoints({
                     method:"DELETE" ,
                 }
             }
-        })  ,  
+        })  ,   
+
+        getCustomerById: build.query({
+            query: (id) => ({
+              url: `/customer/${id}`,
+            }),
+          }),
 
 
       }) 
 }) 
 
-export const {useGetAllCustomersQuery , useAddCustomerMutation  ,useEditCustomerMutation , useDeleteCustomerMutation} = customersApi
+export const {useGetAllCustomersQuery , useAddCustomerMutation  ,useEditCustomerMutation , useDeleteCustomerMutation , useGetCustomerByIdQuery} = customersApi

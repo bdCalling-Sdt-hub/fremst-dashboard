@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Input } from "antd";
 import { useState, useEffect } from "react";
 import { PiImageThin } from "react-icons/pi";
@@ -7,13 +8,22 @@ import { useCreateInspectionMutation } from "../../../redux/features/Dashboard/i
 import moment from "moment";
 import Swal from "sweetalert2";
 import "jspdf-autotable";
+import { useGetProductByIdQuery } from "../../../redux/features/Dashboard/productsApi";
+import { useGetCustomerByIdQuery } from "../../../redux/features/Dashboard/customersApi";
 
 const SubmitInspections = () => {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const { updateInspectionData, inspectionData } = useInspection();
-  const [createInspection, { isLoading, isError, isSuccess, data, error }] = useCreateInspectionMutation();
+  const [createInspection, { isLoading, isError, isSuccess, data, error }] = useCreateInspectionMutation(); 
 
+  const {data:product} = useGetProductByIdQuery(inspectionData.product) 
+  const {data:customer} = useGetCustomerByIdQuery(inspectionData.customer) 
+  
+  const productName = product?.data?.name;
+  const customerName = customer?.data?.contactPerson;
+  const [month , setMonth] = useState(0)
+ //console.log(month);
   useEffect(() => {
     if (isSuccess) {
       if (data) {
@@ -47,7 +57,7 @@ const SubmitInspections = () => {
 
     return () => {
       if (imageUrl) {
-        URL.revokeObjectURL(imageUrl); // Cleanup the URL to prevent memory leaks
+        URL.revokeObjectURL(imageUrl); 
       }
     };
   }, [imageUrl]);
@@ -56,7 +66,8 @@ const SubmitInspections = () => {
     updateInspectionData("isApproved", isApproved);
   };
 
-  const handleNextInspection = (months: number) => {
+  const handleNextInspection = (months: number) => { 
+    setMonth(months)
     const currentDate = moment();
     const nextInspectionDate = currentDate.add(months, "months");
     const formattedDate = nextInspectionDate.format("YYYY-MM-DD HH:mm:ss");
@@ -65,52 +76,167 @@ const SubmitInspections = () => {
 
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     updateInspectionData("summery", e.target.value);
-  };
+  }; 
+
+
 
   const generatePDF = () => {
     const doc = new jsPDF();
     const inspectionDate = moment().format("YYYY-MM-DD");
+    
+    const padding = 15; 
+    const pageWidth = doc.internal.pageSize.width;
 
-
-    doc.addImage("/pdflogo.png" , "PNG", 10, 10, 30, 20);
-    doc.setFontSize(24);
-    doc.text("Inspection Report - Denton Maddox", 60, 20);
-
+    doc.addImage("/pdflogo.png", "PNG", 15, 10, 45, 15);
+    
+    doc.setFontSize(16);
+    const reportTitle = "Inspection Report - Denton Maddox";
+    const textWidth = doc.getTextWidth(reportTitle);
+    doc.text(reportTitle, pageWidth - textWidth - padding, 20);
+    
     doc.setFontSize(12);
-    doc.text(`Customer: ${inspectionData.customer || "Unknown"}`, 10, 40);
-    doc.text(`Protocol ID: 67597f48c4d3de3ccb85a93b`, 120, 40);
-    doc.text(`Date: ${inspectionDate}`, 10, 50);
-    doc.text(`Product Name: Denton Maddox`, 120, 50);
-    doc.text(`Product SKU: abcd`, 120, 80);
-    doc.text(`Storage Location: Earth`, 120, 60);
-    doc.text(`Product Brand: Minus esse id minus`, 120, 90);
+    
+    // Text content with padding
+    doc.text(`Customer: ${customerName || "Unknown"}`, padding, 40);
+    doc.text(
+      `Protocol ID: ${inspectionData.protocolId || "Unknown"}`,
+      pageWidth - 80 - padding,
+      40
+    );
+    
+    doc.text(`Employee: ${inspectionData.username || "Unknown"}`, padding, 45);
+    doc.text(
+      `Product Name: ${productName || "Unknown"}`,
+      pageWidth - 80 - padding,
+      45
+    );
+    
+    doc.text(`Date: ${inspectionDate}`, padding, 50);
+    doc.text(
+      `Storage Location:  ${inspectionData.storageLocation || "Unknown"}`,
+      pageWidth - 80 - padding,
+      50
+    );
+    
+    doc.text(
+      `Product SKU:  ${inspectionData.sku || "Unknown"}`,
+      pageWidth - 80 - padding,
+      55
+    );
+    doc.text(
+      `Product Brand: ${inspectionData.brand || "Unknown"}`,
+      pageWidth - 80 - padding,
+      60
+    );
+    
+  // Table setup
+  const startX = padding;
+  const startY = 70;
+  const cellPadding = 5;
+  const rowHeight = 10;
+  const colWidths = [60, 50, 70]; // Adjust column widths as needed
 
-    // Dynamically Generate Table Body Data
-    const tableBody = inspectionData?.step?.flatMap((step) =>
-      step.answers.map((answer) => [
-        answer.question || "N/A", // Control Points (Question)
-        answer.isYes ? "YES" : "NO", // OK (Boolean to YES/NO)
-        answer.comment || "N/A", // Comments
-      ])
-    ) || [];
+  // Draw table header
+  const headers = ["Control Points", "OK", "Comments"];
+  let currentY = startY;
+  let currentX = startX;
 
-    // Control Points Table
-    doc.autoTable({
-      startY: 90,
-      head: [["Control Points", "OK", "Comments"]],
-      body: tableBody,
-      theme: "grid",
-      styles: { align: "center", fontSize: 10 },
-      headStyles: { fillColor: [100, 100, 255] },
-      columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 30 }, 2: { cellWidth: 90 } },
+  doc.setFont("helvetica", "bold");
+  headers.forEach((header, i) => {
+    const colWidth = colWidths[i];
+    doc.rect(currentX, currentY, colWidth, rowHeight); 
+    doc.text(header, currentX + cellPadding, currentY + rowHeight / 2 + 2); 
+    currentX += colWidth;
+  });
+
+  currentX = startX;
+  currentY += rowHeight;
+
+  // Table body
+  doc.setFont("helvetica", "normal");
+  const rows = inspectionData?.step?.flatMap((step) =>
+    step.answers.map((answer) => [
+      answer.question || "N/A",
+      answer.isYes ? "YES" : "NO",
+      answer.comment || "N/A",
+    ])
+  ) || [];
+
+  rows.forEach((row) => {
+    row.forEach((cell, i) => {
+      const colWidth = colWidths[i];
+      doc.rect(currentX, currentY, colWidth, rowHeight);
+      doc.text(cell.toString(), currentX + cellPadding, currentY + rowHeight / 2 + 2);
+      currentX += colWidth;
     });
+    currentX = startX; 
+    currentY += rowHeight; 
+  });
+ 
+  const pageHeight = doc.internal.pageSize.height; 
+  const watermarkText = "FREMST";
 
-    // Footer Content
-    doc.setFontSize(10);
+  // Set font properties
+  doc.setFontSize(110);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(90, 91, 157); 
+  
+  // Set transparency
+  doc.saveGraphicsState();
+  doc.setGState(new doc.GState({ opacity: 0.1 })); 
+  
+  const centerX = (pageWidth - textWidth) / 2.5;
+  const centerY = pageHeight / 3;
+  
+  // Draw rotated watermark
+  const angle = -40;
+  doc.text(watermarkText, centerX, centerY, { angle });
+  
+  // Restore graphics state to remove transparency settings
+  doc.restoreGraphicsState();
+  
+    doc.setFontSize(12);
+    // doc.setTextColor(0, 0, 0);   
+
+    const isApproved = inspectionData.isApproved;
+    const approvalText = isApproved ? "approved" : "not approved";
+    
+    currentY = rows.length > 0 ? startY + rowHeight * (rows.length + 1) : startY;
+    
+    const baseText = "The equipment is "; // Text before approvalText
+    const endText = " as fall protection equipment"; 
+    let textX = padding;
+    let textY = currentY + 10;
+    
+    // Set font and default text color (black)
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
-    doc.text("The equipment is approved as fall protection equipment", 10, doc.lastAutoTable.finalY + 10);
-    doc.text("The next inspection should take place within 0 months from the inspection", 10, doc.lastAutoTable.finalY + 20);
-    doc.text(`Inspection date & place: ${inspectionDate}`, 10, doc.lastAutoTable.finalY + 30);
+
+    doc.text(baseText, textX, textY);
+    const baseTextWidth = doc.getTextWidth(baseText);
+
+    if (isApproved) {
+      doc.setTextColor(0, 128, 0); 
+    } else {
+      doc.setTextColor(255, 0, 0); 
+    }
+
+    doc.text(approvalText, textX + baseTextWidth, textY);  
+    doc.setTextColor(0, 0, 0);
+    const approvalTextWidth = doc.getTextWidth(approvalText);
+    doc.text(endText, textX + baseTextWidth + approvalTextWidth, textY); 
+
+    doc.text(
+      `The next inspection should take place within ${month} months from the inspection`,
+      padding,
+      currentY + 15
+    );
+    doc.text(
+      `Inspection date & place: ${inspectionDate}`,
+      padding,
+      currentY + 22
+    );
 
     // Generate PDF as Blob or Download
     const pdfBlob = doc.output("blob");
@@ -126,14 +252,14 @@ const SubmitInspections = () => {
     formData.append("data", JSON.stringify(inspectionData));
 
     const pdfBlob = generatePDF();
-    console.log(pdfBlob, "generated.pdf");
+    //console.log(pdfBlob, "generated.pdf");
     formData.append("pdfReport", pdfBlob, "generated.pdf");
 
     try {
       const res = await createInspection(formData).unwrap();
-      console.log(res);
+      //console.log(res);
     } catch (error) {
-      console.error("Error submitting inspection:", error);
+      //console.error("Error submitting inspection:", error);
     }
   };
 

@@ -45,6 +45,7 @@ await holdUser(id).then((res)=>{
         email: value?.email,
         address: value?.address,
         phoneNumber: value?.contact ,
+        companyName: value?.companyName ,
         status: value?.status
     }))
 
@@ -74,6 +75,11 @@ await holdUser(id).then((res)=>{
             title: 'Phone Number',
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
+        },
+        {
+            title: 'Company Name',
+            dataIndex: 'companyName',
+            key: 'companyName',
         },
 
         {

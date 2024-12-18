@@ -31,7 +31,7 @@ const AddInspectionsModal = ({
     },
     maxCount: 1, 
     onChange: (info) => {
-      console.log(info.fileList); 
+      //console.log(info.fileList); 
     },
   }; 
 

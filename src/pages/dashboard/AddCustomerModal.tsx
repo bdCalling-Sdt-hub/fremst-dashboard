@@ -30,7 +30,7 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
   }, [editDetails, form])
 
   const onFinish = async (values: { question: string, answer: string }) => {
-    //console.log(values);  
+    ////console.log(values);  
     const data = {
       id: editDetails?.id,
       ...values
@@ -38,7 +38,7 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
 
     if (editDetails) {
       await editCustomer(data).then((res) => {
-        console.log(res);
+        //console.log(res);
         if (res?.data?.success) {
           Swal.fire({
             text: res?.data?.message,

@@ -38,7 +38,7 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
 
 
   const onFinish = async(values:any) =>{
- console.log(values); 
+ //console.log(values); 
 
  await createUser(values)
  
@@ -60,7 +60,8 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
       <Form layout='vertical' className='' onFinish={onFinish} form={form}>  
         <div className='  pt-[23px] pb-[5px] rounded-2xl'>
   <CommonInput name='name' label='User Name' />
-  <CommonInput name='email' label='Email' />
+  <CommonInput name='email' label='Email' /> 
+  <CommonInput name='companyName' label='Company Name' /> 
   <Form.Item name="password"  
         label={<p className='text-[14px] font-semibold'>Password</p>} 
         rules={[

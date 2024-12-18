@@ -13,7 +13,7 @@ const InspectSubCategory = () => {
   const product = queryParams.get('product');
   const { category , subcategory } = useParams();
   const { data } = useGetInpectionsQuestionQuery(id);
-  console.log(subcategory); 
+  //console.log(subcategory); 
   const { updateStepData } = useInspection();
 
   const questions = data?.data?.map((value: { _id: string, question: string, isComment: boolean }) => ({

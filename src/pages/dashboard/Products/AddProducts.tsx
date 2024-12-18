@@ -61,7 +61,7 @@ const {t} = useTranslation()
       }); 
 
       await addNewProduct(formData).then((res) => {  
-        console.log(res);
+        //console.log(res);
       })
 
     }
@@ -79,20 +79,6 @@ const {t} = useTranslation()
         <div className=" flex gap-10 w-full">
           <div className='pb-[5px] w-full'>
     <CommonInput name='name' label='Product name' />
-    <CommonInput name='brand' label='Brand' />
-    <CommonInput name='type' label='Product Type' />
-    <CommonInput name='companyName' label='Company Name' />
-    <CommonInput name='contactPerson' label='Contact Person' />
-    
-    <Form.Item
-        name="isActive"
-        valuePropName="checked" 
-        label={<p className='text-[14px] font-semibold'>Active Status</p>}
-      >
-        <Checkbox>Active</Checkbox>
-      </Form.Item> 
-
-          </div>   
           {/* image  */}
           <div className=' py-[4px] w-full'>
                     <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
@@ -124,11 +110,12 @@ const {t} = useTranslation()
                         </Form.Item>
                     </label>
                 </div> 
+          </div>   
         </div>
    
-   <Form.Item > 
+   <Form.Item  className="flex items-center justify-end"> 
 
-          <button type="submit" className="bg-primary text-white w-[500px] h-[50px] text-lg rounded-lg mt-5">
+          <button type="submit" className="bg-primary text-white w-[150px] h-[50px] text-lg rounded-lg mt-5">
      {isLoading ? "Loading..." : "Create"}  
           </button>
    </Form.Item>

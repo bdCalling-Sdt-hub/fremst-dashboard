@@ -30,7 +30,7 @@ const InspectionsDetailsModal = ({open , setOpen , itemDetails}:{open:boolean , 
 
     const inspectionDetails = data?.data
 
-    console.log(inspectionDetails);    
+    //console.log(inspectionDetails);    
 
     return ( 
         <div>

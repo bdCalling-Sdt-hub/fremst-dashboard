@@ -77,10 +77,18 @@ const productsApi = baseApi.injectEndpoints({
             query: (id) => ({
                 url: `/question/${id}`,
                 method: "DELETE",
-            }),
-        }) ,
+            }), 
+        }) , 
+
+        getProductById: build.query({ 
+            query: (id) => { 
+                return{ 
+                    url: `/product/${id}` , 
+                } 
+            } 
+        })
 
      }) 
 }) 
 
-export const {useGetAllProductsQuery , useAddNewProductMutation , useGetAllStepsQuery , useAddNewStepMutation , useDeleteStepsMutation , useAddQuestionMutation , useGetAllQuestionsQuery , useUpdateQuestionMutation , useDeleteQuestionMutation} = productsApi
+export const {useGetAllProductsQuery , useAddNewProductMutation , useGetAllStepsQuery , useAddNewStepMutation , useDeleteStepsMutation , useAddQuestionMutation , useGetAllQuestionsQuery , useUpdateQuestionMutation , useDeleteQuestionMutation , useGetProductByIdQuery } = productsApi
