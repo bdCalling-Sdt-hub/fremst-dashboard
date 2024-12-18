@@ -1,6 +1,5 @@
 import { Table, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import { useDeleteCustomerMutation, useGetAllCustomersQuery } from '../../redux/features/Dashboard/customersApi';
 import { useState } from 'react';
 import AddCustomerModal from './AddCustomerModal';

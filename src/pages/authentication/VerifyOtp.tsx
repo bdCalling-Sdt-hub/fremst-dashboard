@@ -1,5 +1,4 @@
 import { Button, ConfigProvider, Form , Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage, setToLocalStorage } from '../../utils/LocalStorage';
 import { useForgetPasswordMutation, useVerifyEmailMutation } from '../../redux/features/auth/authApi';

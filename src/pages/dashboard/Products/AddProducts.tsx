@@ -1,4 +1,4 @@
-import { Checkbox, Form, Input } from "antd";
+import {  Form, Input } from "antd";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import CommonInput from "../../../components/shared/CommonInput";
@@ -60,10 +60,7 @@ const {t} = useTranslation()
         formData?.append(key, value as string);
       }); 
 
-      await addNewProduct(formData).then((res) => {  
-        //console.log(res);
-      })
-
+      await addNewProduct(formData)
     }
     return (
         <div className='w-full'>

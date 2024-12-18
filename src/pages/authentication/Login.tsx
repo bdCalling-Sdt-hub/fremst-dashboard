@@ -1,5 +1,5 @@
-import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
+import { Button, Checkbox, ConfigProvider, Form, Input } from 'antd';
+
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -37,7 +37,7 @@ const Login = () => {
       }, [isSuccess, isError, error, data, navigate])  
 
 
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => { 
+    const onFinish: any = async (values:any) => { 
         await loginUser(values)
         // navigate('/'); 
     };

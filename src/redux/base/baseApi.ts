@@ -4,7 +4,7 @@ import { getFromLocalStorage } from "../../utils/LocalStorage";
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://164.90.205.5:3001/api/v1",
   // baseUrl: "http://192.168.10.15:3001/api/v1", 
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers) => {
     const token = getFromLocalStorage("AccessToken"); 
    
     if (token) {

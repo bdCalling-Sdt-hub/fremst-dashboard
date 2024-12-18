@@ -30,9 +30,7 @@ const AddInspectionsModal = ({
       return isPDF || Upload.LIST_IGNORE;
     },
     maxCount: 1, 
-    onChange: (info) => {
-      //console.log(info.fileList); 
-    },
+
   }; 
 
   useEffect(() => {

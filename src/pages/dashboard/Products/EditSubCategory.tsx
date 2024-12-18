@@ -7,7 +7,7 @@ import { useDeleteQuestionMutation, useGetAllQuestionsQuery } from '../../../red
 import { imageUrl } from '../../../redux/base/baseApi';
 import { MdDelete } from 'react-icons/md';
 import Swal from 'sweetalert2';
-import { useTranslation } from 'react-i18next';
+
 
 const EditSubCategory = () => {
 

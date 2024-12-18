@@ -1,6 +1,6 @@
 
 import { Table, Typography, Checkbox } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useInspectionByIdQuery } from '../../../redux/features/Dashboard/homeApi';
 import { imageUrl } from '../../../redux/base/baseApi';
 import moment from 'moment';
