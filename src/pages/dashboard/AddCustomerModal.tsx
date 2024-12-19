@@ -1,5 +1,5 @@
 
-import { Form, Modal } from 'antd';
+import { Form, Input, Modal } from 'antd';
 import CommonInput from '../../components/shared/CommonInput';
 import { useEffect } from 'react';
 import { useAddCustomerMutation, useEditCustomerMutation } from '../../redux/features/Dashboard/customersApi';
@@ -16,13 +16,14 @@ interface editDetailsType {
   phone: string
 }
 
-const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch }: { open: boolean, setOpen: (open: boolean) => void, setEditDetails: any, editDetails: editDetailsType | undefined, refetch: any }) => { 
+const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch }: { open: boolean, setOpen: (open: boolean) => void, setEditDetails: any, editDetails: editDetailsType | undefined, refetch: any }) => {
 
 
   const [form] = Form.useForm()
   const [addCustomer] = useAddCustomerMutation()
-  const [editCustomer] = useEditCustomerMutation() 
-  const {t} = useTranslation()
+  const [editCustomer] = useEditCustomerMutation()
+  const { t } = useTranslation() 
+  
   useEffect(() => {
     if (editDetails) {
       form.setFieldsValue({ email: editDetails?.email, companyName: editDetails?.companyName, companyPhone: editDetails?.companyNumber, contactPerson: editDetails?.contactPerson, address: editDetails?.address, phone: editDetails?.phone })
@@ -30,7 +31,6 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
   }, [editDetails, form])
 
   const onFinish = async (values: { question: string, answer: string }) => {
-    ////console.log(values);  
     const data = {
       id: editDetails?.id,
       ...values
@@ -65,7 +65,6 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
       })
     } else {
       await addCustomer(values).then((res) => {
-
         if (res?.data?.success) {
           Swal.fire({
             text: res?.data?.message,
@@ -111,11 +110,40 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
         {/* form   */}
 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
-          <div className=' pt-[23px] pb-[5px] rounded-2xl'>
+          <div className=' pt-[13px] pb-[5px] rounded-2xl'>
             <CommonInput name='companyName' label='Company Name' />
             <CommonInput name='companyPhone' label='Company Number' />
             <CommonInput name='contactPerson' label='Contact Person' />
+            <CommonInput name='name' label='Customer Name' />
             <CommonInput name='email' label='Email' />
+            <Form.Item name="password"
+              label={<p className='text-[14px] font-semibold'>Password</p>}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your new Password!",
+                },
+
+                {
+                  min: 8,
+                  message: "Password must be at least 8 characters long!",
+                },
+              ]}
+
+            >
+              <Input.Password
+                style={{
+                  border: "1px solid #BABABA",
+                  height: "48px",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                  padding: "8px",
+                  background: "white",
+                }}
+                className={` `}
+              />
+            </Form.Item>
             <CommonInput name='phone' label='Phone' />
             <CommonInput name='address' label='Address' />
           </div>

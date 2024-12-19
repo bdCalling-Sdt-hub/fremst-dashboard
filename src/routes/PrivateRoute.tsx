@@ -15,7 +15,7 @@ const PrivateRoute = ({ children }:{children: React.ReactNode}) => {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  if (profile?.data?.role === "ADMIN" || profile?.data?.role === "SUPERADMIN") {
+  if (profile?.data?.role === "CUSTOMER" || profile?.data?.role === "SUPERADMIN") {
     return children; 
   }
 

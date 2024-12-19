@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import AddInspectionsModal from './AddInspectionsModal';
 import { useState } from 'react';       
 import { useTranslation } from 'react-i18next';
+import { useGetProfileQuery } from '../../../redux/features/auth/authApi';
 
 const { Title, Text, Link } = Typography;
 
@@ -26,7 +27,9 @@ const InspectionDetails = () => {
   const [deleteInspectionHistory] = useDeleteInspectionHistoryMutation()
   const { data: inspectionsHistory, refetch } = useGetInspectionHistoryQuery({ customerId, productId })
  const {t} = useTranslation()
-  const inspectionDetails = inspection?.data
+  const inspectionDetails = inspection?.data 
+  const { data } = useGetProfileQuery(undefined);
+  const profileData = data?.data; 
 
   const inspectionHistory = inspectionsHistory?.data?.history?.map((value: any, index: number) => ({
     key: index + 1,
@@ -82,11 +85,14 @@ const InspectionDetails = () => {
       key: 'report',
       render: (report: any) => <Link href={report} target="_blank" className="text-primary">Inspection.pdf</Link>,
     },
-    { title: 'Inspection date', dataIndex: 'date', key: 'date' },
+    { title: 'Inspection date', dataIndex: 'date', key: 'date' }, 
+    
     {
       title: 'Overview',
       key: 'action',
-      render: (_: any, record: any) => <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button>,
+      render: (_: any, record: any) => <div> 
+        { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button> : "" } ,
+      </div>  
     },
   ];
 
@@ -94,13 +100,18 @@ const InspectionDetails = () => {
     <div className="  mx-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
-        <Title level={3} className="!m-0">{inspectionDetails?.productName}</Title>
-        <button
+        <Title level={3} className="!m-0">{inspectionDetails?.productName}</Title> 
+
+        { 
+          profileData?.role==="SUPERADMIN" ? <button
           className="bg-primary text-white w-[253px] h-[40px] rounded transition"
           onClick={() => setOpen(true)}
         >
           Add Inspection Report
-        </button>
+        </button> 
+        : ""
+        }
+
 
       </div>
 

@@ -24,7 +24,7 @@ const CommonInput = ({ name, label }: { name: string; label: string }) => {
                 <Input   
                     style={{
                         border: "1px solid #BABABA",
-                        height: "48px",
+                        height: "44px",
                         borderRadius: "8px",
                         outline: "none",
                         width: "100%",

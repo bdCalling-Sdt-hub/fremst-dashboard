@@ -11,7 +11,8 @@ const { Option } = Select;
 const HeaderDashboard = () => {
   const { i18n } = useTranslation();
   const { data } = useGetProfileQuery(undefined);
-  const profileData = data?.data;
+  const profileData = data?.data; 
+
 
   const location = useLocation();
   const pathName = location?.pathname;
@@ -70,7 +71,7 @@ const HeaderDashboard = () => {
 
           {/* Profile Section */}
           <Link
-            to="/profile"
+            to="/settings"
             style={{
               height: '55px',
               cursor: 'pointer',
