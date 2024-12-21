@@ -1,6 +1,6 @@
 import  { useState } from 'react';
 import { Breadcrumb, Button, Form, Input, Radio } from 'antd';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
 import AddQuestionModal from './AddQuestionModal';
 import { useDeleteQuestionMutation, useGetAllQuestionsQuery } from '../../../redux/features/Dashboard/productsApi';
@@ -20,7 +20,7 @@ const EditSubCategory = () => {
   const { category, subCategory } = useParams();
   const {data:allQuestions , refetch} = useGetAllQuestionsQuery(stepId) 
 const [deleteQuestion] = useDeleteQuestionMutation()
- 
+ const navigate = useNavigate()
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -70,7 +70,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
             title: <Link to="/products-edit" className="text-[16px] font-medium">Edit product inspection</Link>,
           },
           {
-            title: <Link to={`/products-edit/${category}?id=${productId}`} className="text-[16px] font-medium">Safety Harness</Link>,
+            title: <Link to={`/products-edit/${category}?id=${productId}`} className="text-[16px] font-medium">{category}</Link>,
           },
           {
             title: <p className="text-[16px] font-medium">{subCategory}</p>,
@@ -78,7 +78,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
         ]}
       />
 
-      <h2 className="text-2xl font-semibold my-6">Edit {subCategory} Details</h2>
+      <h2 className="text-2xl font-semibold my-6">Edit {subCategory} details</h2>
 
 
       <div  className='w-full'>
@@ -158,13 +158,13 @@ const [deleteQuestion] = useDeleteQuestionMutation()
               onClick={() => setOpen(true)}
               className="flex items-center space-x-2 mb-8  border border-primary px-2 py-1 rounded "
             >
-              <span className=' font-semibold text-primary '>+ Add Question</span>
+              <span className=' font-semibold text-primary '>+ Add question</span>
             </Button>
           </div>
 
           {/* Image Upload Section */}
           <div className="mb-8 w-full" >
-            <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
+            <p className="text-[14px] font-semibold py-1">Upload product picture</p>
             <label
               htmlFor="image"
               style={{ display: "block", }}
@@ -184,7 +184,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
 
         </div>
         {/* Next Button */}
-        <Button type="primary" className=" bg-primary h-[48px] w-[360px] text-white">
+        <Button type="primary" className=" bg-primary h-[48px] w-[360px] text-white" onClick={()=>navigate(`/products-edit/${category}?id=${productId}`)}>
           Next
         </Button>
       </div>

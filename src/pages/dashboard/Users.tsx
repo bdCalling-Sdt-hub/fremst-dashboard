@@ -52,38 +52,38 @@ await holdUser(id).then((res)=>{
       
     const columns = [
         {
-            title: 'Serial No.',
+            title: t("serial") ,
             dataIndex: 'key',
             key: 'key',
         },
         {
-            title: 'User Name',
+            title: t("userName"),
             dataIndex: 'userName',
             key: 'userName',
         },
         {
-            title: 'Email',
+            title: t('email'),
             dataIndex: 'email',
             key: 'email',
         },
         {
-            title: 'Address',
+            title: t('address'),
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Phone Number',
+            title: t('phone'),
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
         },
         {
-            title: 'Company Name',
+            title: t('companyName'),
             dataIndex: 'companyName',
             key: 'companyName',
         },
 
         {
-            title: 'Overview',
+            title: t('overview'),
             key: 'Overview',
             render: (_: any, record: any) => (
                 <div className="flex items-center gap-3">
@@ -110,7 +110,7 @@ await holdUser(id).then((res)=>{
             className="bg-primary text-white w-[173px] h-[40px] rounded transition"
             onClick={()=>setOpen(true)}  
           >
-            Add employee
+         {t("addEmployee")}
           </button>
                 </div>
             </Flex>

@@ -25,10 +25,10 @@ const Products = () => {
     <div className="p-6 font-sans">
       <div className="flex gap-4 mb-6">
         <button onClick={() => navigate('/products-add')} className="bg-primary text-white w-[238px] h-[40px] rounded  transition">
-          Add new products
+         {t("addNewProduct")}
         </button>
         <button onClick={() => navigate('/products-edit')} className="bg-primary text-white w-[238px] h-[40px] rounded  transition">
-          Edit products
+         {t("editProducts")}
         </button>
       </div>
       <h2 className="text-lg font-semibold mb-4">{t("productTitle")}</h2>

@@ -66,14 +66,14 @@ const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOp
             open={open}
             onCancel={() => { setOpen(false); form.resetFields() }}
             width={500}
-            title={<p className='text-[18px] font-semibold' > Add Category </p>}
+            title={<p className='text-[18px] font-semibold' > Add category </p>}
             footer={null}
         >
             <div >
 
                 <Form form={form} layout="vertical" onFinish={onFinish}>
 
-                    <CommonInput name='name' label='Category Name' />
+                    <CommonInput name='name' label='Category name' />
 
                     <div className=' py-[4px] w-full'>
                         <p className="text-[14px] font-semibold py-1">Image</p>

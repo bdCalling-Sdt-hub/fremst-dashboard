@@ -78,17 +78,17 @@ const InspectionDetails = () => {
 
   // Table columns
   const columns = [
-    { title: 'Serial No', dataIndex: 'key', key: 'key' },
+    { title:   t("serial"), dataIndex: 'key', key: 'key' },
     {
-      title: 'Report',
+      title: t("report"),
       dataIndex: 'report',
       key: 'report',
       render: (report: any) => <Link href={report} target="_blank" className="text-primary">Inspection.pdf</Link>,
     },
-    { title: 'Inspection date', dataIndex: 'date', key: 'date' }, 
+    { title: t("inspectionDate") , dataIndex: 'date', key: 'date' }, 
     
     {
-      title: 'Overview',
+      title: t("overview"),
       key: 'action',
       render: (_: any, record: any) => <div> 
         { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button> : "" } ,
@@ -107,7 +107,7 @@ const InspectionDetails = () => {
           className="bg-primary text-white w-[253px] h-[40px] rounded transition"
           onClick={() => setOpen(true)}
         >
-          Add Inspection Report
+          {t("addInspectionReport")}
         </button> 
         : ""
         }
@@ -157,12 +157,12 @@ const InspectionDetails = () => {
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product serial No:</Text>
+              <Text strong className="">Product serial no:</Text>
               <Text className="">{inspectionDetails?.serialNo}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product EN Standard:</Text>
+              <Text strong className="">Product eN standard:</Text>
               <Text className="">{inspectionDetails?.enStandard}</Text>
             </div>
 

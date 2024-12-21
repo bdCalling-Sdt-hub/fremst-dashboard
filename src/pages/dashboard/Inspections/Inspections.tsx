@@ -31,32 +31,32 @@ const Inspections = () => {
 
   const columns = [
     {
-      title: 'Serial No.',
+      title:t("serial") ,
       dataIndex: 'key',
       key: 'key',
     },
     {
-      title: "User's Name",
+      title: t("userName") ,
       dataIndex: 'username',
       key: 'username',
     },
     {
-      title: 'Company Name',
+      title: t("companyName") ,
       dataIndex: 'companyName',
       key: 'companyName',
     },
     {
-      title: 'Product',
+      title: t('product'),
       dataIndex: 'product',
       key: 'product',
     },
     {
-      title: 'Date',
+      title: t('date'),
       dataIndex: 'date',
       key: 'date',
     },
     {
-      title: 'Latest Inspection',
+      title: t('latestInspection'),
       dataIndex: 'latestInspection',
       key: 'latestInspection',
       render: (latestInspection: any) => (
@@ -66,7 +66,7 @@ const Inspections = () => {
       ),
     },
     {
-      title: 'Actions',
+      title: t('action'),
       key: 'action',
       render: (_: any, record: any) => (
         <div className="text-[#0D7EFF] font-semibold">

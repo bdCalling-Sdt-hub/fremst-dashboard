@@ -78,7 +78,7 @@ const {t} = useTranslation()
     <CommonInput name='name' label='Product name' />
           {/* image  */}
           <div className=' py-[4px] w-full'>
-                    <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
+                    <p className="text-[14px] font-semibold py-1">Upload product picture</p>
 
                     <label
                         htmlFor="image"

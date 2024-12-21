@@ -5,13 +5,15 @@ import { useGetProfileQuery } from '../../redux/features/auth/authApi';
 import { imageUrl } from '../../redux/base/baseApi';
 import { useTranslation } from 'react-i18next';
 
+
 const { Header } = Layout;
 const { Option } = Select;
 
 const HeaderDashboard = () => {
   const { i18n } = useTranslation();
   const { data } = useGetProfileQuery(undefined);
-  const profileData = data?.data; 
+  const profileData = data?.data;  
+  const {t} = useTranslation()
 
 
   const location = useLocation();
@@ -22,7 +24,9 @@ const HeaderDashboard = () => {
       : pathName
           .split('/')[1]
           ?.split('-')[0]
-          ?.replace(/^\w/, (c) => c.toUpperCase()); // Capitalizes the first letter
+          ?.replace(/^\w/, (c) => c.toUpperCase());  
+
+        
 
   const handleSelectLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -38,7 +42,7 @@ const HeaderDashboard = () => {
       }}
     >
       <div className="flex items-center justify-between h-full">
-        <CommonTitle className="font-[600] text-[28px]">{formattedPathName}</CommonTitle>
+        <CommonTitle className="font-[600] text-[28px]">{formattedPathName === "Dashboard" ? t("dashboard") : formattedPathName === "Products" ? t("products") : formattedPathName === "Customers" ? t("customers"):formattedPathName === "Employees" ? t("employees") : formattedPathName === "Inspections" ? t("inspections"): t("settings")}</CommonTitle>
 
         <div className="flex items-center justify-end gap-3 h-full">
           {/* Language Selector */}

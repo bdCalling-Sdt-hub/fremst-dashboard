@@ -82,39 +82,39 @@ const Customers = () => {
 
     const columns = [
         {
-            title: 'Company Name',
+            title: t('companyName'),
             dataIndex: 'companyName',
             key: 'companyName',
         },
         {
-            title: "Company Number",
+            title: t("companyNumber"),
             dataIndex: 'companyNumber',
             key: 'companyNumber',
         },
         {
-            title: "Contact Person",
+            title: t("contactPerson"),
             dataIndex: 'contactPerson',
             key: 'contactPerson',
         },
         {
-            title: 'Address',
+            title: t('address'),
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Email',
+            title: t('email'),
             dataIndex: 'email',
             key: 'email',
         },
         
         {
-            title: 'Phone',
+            title: t('phone'),
             dataIndex: 'phone',
             key: 'phone',
         },
         
         {
-            title: 'Overview',
+            title: t('overview'),
             key: 'action',
             render: (_: any, record: any) => (
               <div className='flex gap-2 items-center font-medium'>
@@ -152,7 +152,7 @@ const Customers = () => {
             className="bg-primary text-white w-[173px] h-[40px] rounded transition"
             onClick={() => setOpen(true)}
           >
-            Add Customer
+           {t("addCustomer")} 
           </button>
                 </div>
             </div>

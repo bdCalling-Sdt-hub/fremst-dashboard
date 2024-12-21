@@ -95,7 +95,7 @@ const AddQuestionModal = ({open , setOpen , productId , stepId , setEditDetails 
         open={open}
         onCancel={() => { setOpen(false); form.resetFields() , setEditDetails(null) }}
         width={500}
-        title={<p className='text-[18px] font-semibold' > {editDetails ? "Edit Question" : "Add Question"}  </p>}
+        title={<p className='text-[18px] font-semibold' > {editDetails ? "Edit question" : "Add question"}  </p>}
         footer={null}
     >
         <div> 
@@ -104,7 +104,7 @@ const AddQuestionModal = ({open , setOpen , productId , stepId , setEditDetails 
         }}>
   <Form.Item
     label={
-      <p className="text-[16px] font-medium">Question Name</p>
+      <p className="text-[16px] font-medium">Question name</p>
     }
     name="question" 
     rules={[{ required: true, message: 'Please enter the question name!' }]} 

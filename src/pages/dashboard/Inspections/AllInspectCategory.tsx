@@ -27,8 +27,8 @@ const AllInspectCategory = () => {
  
  <div className='flex  items-center justify-between mb-5'>
         <h2 className="text-lg font-semibold mb-4">{t("inspectByCategory")}</h2>
-        <button onClick={() => navigate(`/inspections/submitInspections`)}  className="bg-primary text-white w-[170px] h-[40px] rounded  transition">
-                Submit Inspections
+        <button onClick={() => navigate(`/inspections/submitInspections`)}  className="bg-primary text-white w-[170px] h-[40px] rounded  transition"> 
+          {t("submitInspections")}
               </button>
  </div>
         <div className="flex flex-col gap-3">
@@ -37,7 +37,7 @@ const AllInspectCategory = () => {
              
               <p className="flex-1 font-medium">{product.name}</p>
               <button onClick={() => navigate(`/inspections-create/${category}/${category}/${product.name}?id=${product.id}&product=${id}`)}  className="bg-primary text-white w-[100px] h-[40px] rounded  transition">
-                Inspect
+              {t("inspect")}  
               </button>
             </div>
           ))}
