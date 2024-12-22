@@ -57,5 +57,8 @@
     "productActive": "Product active" ,
      "addNewProduct": "Add new product" , 
      "customers":"Customers" ,
-     "inspections":"Inspections" 
+     "inspections":"Inspections" , 
+     "brand":"Brand" ,
+     "addBrand" : "Add brand"  ,
+     "editBrand" : "Edit brand" 
 }

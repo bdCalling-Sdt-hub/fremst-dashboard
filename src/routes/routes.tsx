@@ -21,6 +21,7 @@ import AllInspectCategory from '../pages/dashboard/Inspections/AllInspectCategor
 import InspectSubCategory from '../pages/dashboard/Inspections/InspectSubCategory';
 import SubmitInspections from '../pages/dashboard/Inspections/SubmitInspections';
 import PrivateRoute from './PrivateRoute';
+import Brand from '../pages/dashboard/brand/Brand';
 
 const router = createBrowserRouter([
     {
@@ -41,7 +42,8 @@ const router = createBrowserRouter([
             { path: 'inspections-create/:category', element: <InspectionsCreate /> },
             { path: 'inspections-creates/:category', element: <AllInspectCategory /> },
             { path: 'inspections-create/:category/:category/:subcategory', element: <InspectSubCategory /> },
-            { path: 'inspections/submitInspections', element: <SubmitInspections /> },
+            { path: 'inspections/submitInspections', element: <SubmitInspections /> }, 
+            {path:"brand" , element: <Brand/>},
             { path: 'settings', element: <Profile /> },
         ],
     },

@@ -7,6 +7,7 @@ import { Form, Input, Select } from 'antd';
 import CommonInput from '../../../components/shared/CommonInput';
 import { useTranslation } from 'react-i18next';
 import { useGetProfileQuery } from '../../../redux/features/auth/authApi';
+import { useGetAllBrandsQuery } from '../../../redux/features/Dashboard/brandApi';
 
 const InspectionsCreate = () => {
   const navigate = useNavigate();
@@ -18,8 +19,8 @@ const InspectionsCreate = () => {
   const product = queryParams.get('id');
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
-  const { t } = useTranslation();
-
+  const { t } = useTranslation(); 
+  const {data:allBrands} = useGetAllBrandsQuery({}) 
 
   useEffect(() => {
     if (!inspectionData.product && product) {
@@ -61,15 +62,33 @@ const InspectionsCreate = () => {
           username: profile?.data?.name,
         }} >
         <div className='pb-[5px]'>
-          <CommonInput name='serialNo' label='Serial No' />
-          <CommonInput name='enStandard' label='En Standard' />
+          <CommonInput name='serialNo' label='Serial no' />
+          <CommonInput name='enStandard' label='En standard' />
           <CommonInput name='sku' label='Product SKU' />
-          <CommonInput name='storageLocation' label='Storage Location' />
-          <CommonInput name='brand' label='Brand' />
+          <CommonInput name='storageLocation' label='Storage location' />
+          <Form.Item
+            name="brand"
+            label={<p className='text-[14px] font-semibold'>Select brand</p>}
+            rules={[{ required: true, message: `Customer is required` }]}
+          >
+            <Select
+              placeholder="Select a brand"
+              style={{ width: "100%", height: "48px" }}
+              showSearch
+              optionFilterProp="children"
+            >
+              {allBrands?.data?.map((brand: { _id: string, name: string }) => (
+                <Select.Option key={brand?._id} value={brand?.name}>
+                  {brand?.name} 
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item> 
+
           <CommonInput name='companyName' label='Company Name' />
           <Form.Item
             name="username"
-            label={<p className='text-[14px] font-semibold'>User Name</p>}
+            label={<p className='text-[14px] font-semibold'>User name</p>}
 
           >
             <Input
@@ -91,7 +110,7 @@ const InspectionsCreate = () => {
 
           <Form.Item
             name="customer"
-            label={<p className='text-[14px] font-semibold'>Select Customer</p>}
+            label={<p className='text-[14px] font-semibold'>Select customer</p>}
             rules={[{ required: true, message: `Customer is required` }]}
           >
             <Select
@@ -101,8 +120,8 @@ const InspectionsCreate = () => {
               optionFilterProp="children"
             >
               {customersData?.data?.map((customer: { _id: string, contactPerson: string, email: string }) => (
-                <Select.Option key={customer._id} value={customer._id}>
-                  {customer.contactPerson} ({customer.email})
+                <Select.Option key={customer?._id} value={customer?._id}>
+                  {customer?.contactPerson} ({customer?.email})
                 </Select.Option>
               ))}
             </Select>

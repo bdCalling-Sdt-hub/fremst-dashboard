@@ -23,7 +23,7 @@ const SubmitInspections = () => {
   const productName = product?.data?.name;
   const customerName = customer?.data?.contactPerson;
   const [month , setMonth] = useState(0)
- //console.log(month);
+ console.log(inspectionData); 
   useEffect(() => {
     if (isSuccess) {
       if (data) {

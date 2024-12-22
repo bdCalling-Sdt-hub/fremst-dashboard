@@ -57,5 +57,8 @@
     "product": "Produkt",
     "addNewProduct": "Lägg till ny produkt",
     "customers": "Kunder",
-    "inspections": "Inspektioner"
+    "inspections": "Inspektioner",
+    "brand": "Märke",
+    "addBrand": "Lägg till märke",
+    "editBrand": "Redigera märke"
 }

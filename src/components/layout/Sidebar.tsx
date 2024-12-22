@@ -2,7 +2,7 @@ import { ConfigProvider, Layout, Menu } from 'antd';
 import { sidebarItemsGenerator, TSidebarItem } from '../../utils/generateSidebarItems';
 
 import { BsBox } from 'react-icons/bs';
-import { TbLogout } from 'react-icons/tb';
+import { TbBrandBing, TbLogout } from 'react-icons/tb';
 import { RxDashboard } from 'react-icons/rx';
 import { LuUser2 } from 'react-icons/lu';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -54,6 +54,13 @@ const Sidebar = () => {
             label: t('inspection'),
             path: 'inspections',
             icon: <HiOutlineClipboardDocumentList size={24} />, 
+            roles: ['SUPERADMIN', 'CUSTOMER'],
+        },
+        {
+            key: 'Brand',
+            label: t('brand'),
+            path: 'brand',
+            icon: <TbBrandBing size={24} />, 
             roles: ['SUPERADMIN', 'CUSTOMER'],
         },
         {
