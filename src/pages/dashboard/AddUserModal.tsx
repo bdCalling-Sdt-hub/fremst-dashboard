@@ -59,9 +59,9 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
 
       <Form layout='vertical' className='' onFinish={onFinish} form={form}>  
         <div className='  pt-[23px] pb-[5px] rounded-2xl'>
-  <CommonInput name='name' label='User Name' />
+  <CommonInput name='name' label='User name' />
   <CommonInput name='email' label='Email' /> 
-  <CommonInput name='companyName' label='Company Name' /> 
+  <CommonInput name='companyName' label='Company name' /> 
   <Form.Item name="password"  
         label={<p className='text-[14px] font-semibold'>Password</p>} 
         rules={[
@@ -94,7 +94,7 @@ message: "Password must be at least 8 characters long!",
         </div> 
 
         <button className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
-      {isLoading ? "Loading..." : "Save Changes"} 
+      {isLoading ? "Loading..." : "Save changes"} 
         </button>
       </Form>
     

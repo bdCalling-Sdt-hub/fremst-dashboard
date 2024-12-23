@@ -87,7 +87,7 @@ const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOp
                             >
                                 <div className="flex justify-center items-center w-full h-[200px] border-2 border-dotted border-[#BABABA] ">
                                     {imageUrl ? (
-                                        <img src={imageUrl} style={{ height: "120px", width: "120px", borderRadius: 10, objectFit: "contain" }} alt="" />
+                                        <img src={imageUrl} style={{ height: "190px", width: "190px", borderRadius: 10, objectFit: "contain" }} alt="" />
                                     )
                                         : (
                                             <PiImageThin className="text-8xl flex items-center justify-center text-[#666666] font-[400]" />

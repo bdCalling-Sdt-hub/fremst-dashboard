@@ -68,7 +68,7 @@ const InspectSubCategory = () => {
                 <div className="flex items-center space-x-4">
                   <Form.Item
                     name={`comment_${index}`}
-                    label="Comment Field"
+                    label="Comment field"
                     rules={[{ required: question.isComment, message: 'Comment is required' }]}
                   >
                     <Input 
@@ -95,7 +95,7 @@ const InspectSubCategory = () => {
           </div>
 
           <div className="w-full">
-            <p className="text-[14px] font-semibold py-1">Upload Product Picture</p>
+            <p className="text-[14px] font-semibold py-1">Upload product picture</p>
             <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200">
               <img
                 src={
@@ -104,14 +104,14 @@ const InspectSubCategory = () => {
                     : `${imageUrl}${data?.stepImage}`
                 }
                 alt="Step"
-                style={{ height: '120px', width: '120px', borderRadius: 10, objectFit: 'contain' }}
+                style={{ height: '220px', width: '220px', borderRadius: 10, objectFit: 'contain' }}
               />
             </div>
           </div>
         </div>
 
         <Button type="primary" htmlType="submit" className="bg-primary h-[48px] w-[360px] text-white">
-          Save & Next
+          Save & next
         </Button>
       </Form>
     </div>

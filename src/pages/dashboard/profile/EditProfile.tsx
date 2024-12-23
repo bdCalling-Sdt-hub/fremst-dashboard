@@ -102,7 +102,7 @@ const EditProfile: React.FC = () => {
                 <Form.Item
                     label={
                         <label htmlFor="name" className="block text-primaryText mb-1 text-lg">
-                            Full Name
+                            Full name
                         </label>
                     }
                     name="name"

@@ -39,7 +39,7 @@ const ChangePassword = () => {
             <Form.Item
                     label={
                         <label  className="block text-primaryText mb-1 text-lg">
-                            Current Password
+                            Current password
                         </label>
                     }
                     name="currentPassword"
@@ -50,7 +50,7 @@ const ChangePassword = () => {
                 <Form.Item
                     label={
                         <label className="block text-primaryText mb-1 text-lg">
-                            New Password
+                            New password
                         </label>
                     }
                     name="newPassword"
@@ -80,7 +80,7 @@ const ChangePassword = () => {
                 <Form.Item
                     label={
                         <label className="block text-primaryText mb-1 text-lg">
-                            Confirm Password
+                            Confirm password
                         </label>
                     }
                     name="confirmPassword"
@@ -114,7 +114,7 @@ const ChangePassword = () => {
                             fontWeight: 500,
                         }}
                     >
-                     {isLoading ? "Loading..." : "Change Password"} 
+                     {isLoading ? "Loading..." : "Change password"} 
                     </Button>
                 </Form.Item>
             </Form>

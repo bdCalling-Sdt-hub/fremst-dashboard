@@ -86,7 +86,7 @@ const AddInspectionsModal = ({
         <Form layout="vertical" className="w-1/2" onFinish={onFinish} form={form}>
           <Form.Item
             name="date"
-            label={<p className="text-[14px] font-semibold">Inspection Date</p>}
+            label={<p className="text-[14px] font-semibold">Inspection date</p>}
             rules={[{ required: true, message: "Please select a date" }]}
           >
             <DatePicker className="w-[432px] h-[48px] rounded-lg" />
@@ -94,7 +94,7 @@ const AddInspectionsModal = ({
 
           <Form.Item
             name="pdfFile"
-            label={<p className="text-[14px] font-semibold">Upload PDF</p>}
+            label={<p className="text-[14px] font-semibold">Upload pdf</p>}
             valuePropName="fileList"
             getValueFromEvent={(e) =>
               Array.isArray(e) ? e : e?.fileList
@@ -106,7 +106,7 @@ const AddInspectionsModal = ({
                 icon={<UploadOutlined />}
                 className="w-[432px] h-[48px] rounded-lg"
               >
-                Upload File
+                Upload file
               </Button>
             </Upload>
           </Form.Item>

@@ -84,7 +84,7 @@ const ProductsEditCategory = () => {
          <p className='text-[18px] font-semibold py-5' > {category} </p> 
  
 <button onClick={() => setOpen(true)}   className="bg-primary text-white w-[140px] h-[40px] rounded  transition flex items-center justify-center gap-1"> 
- <span> <FiPlus size={18} /> </span> <span> Add Category  </span>
+ <span> <FiPlus size={18} /> </span> <span> Add category  </span>
   </button>
          </div>
 

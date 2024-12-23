@@ -111,10 +111,10 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
           <div className=' pt-[13px] pb-[5px] rounded-2xl'>
-            <CommonInput name='companyName' label='Company Name' />
-            <CommonInput name='companyPhone' label='Company Number' />
-            <CommonInput name='contactPerson' label='Contact Person' />
-            <CommonInput name='name' label='Customer Name' />
+            <CommonInput name='companyName' label='Company name' />
+            <CommonInput name='companyPhone' label='Company number' />
+            <CommonInput name='contactPerson' label='Contact person' />
+            <CommonInput name='name' label='Customer name' />
             <CommonInput name='email' label='Email' />
             <Form.Item name="password"
               label={<p className='text-[14px] font-semibold'>Password</p>}
@@ -149,7 +149,7 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
           </div>
 
           <button className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
-            {editDetails ? 'Save Changes' : 'Submit'}
+            {editDetails ? 'Save changes' : 'Submit'}
           </button>
         </Form>
 

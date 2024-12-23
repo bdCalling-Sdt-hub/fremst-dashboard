@@ -61,7 +61,7 @@ const Inspections = () => {
       key: 'latestInspection',
       render: (latestInspection: any) => (
         <a href={latestInspection} target="_blank" rel="noopener noreferrer">
-          View PDF
+          View pdf
         </a>
       ),
     },

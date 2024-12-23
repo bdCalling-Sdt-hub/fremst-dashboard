@@ -137,7 +137,7 @@ const InspectionDetails = () => {
           <div className="space-y-[2px]">
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product SKU:</Text>
+              <Text strong className="">Product sku:</Text>
               <Text className="">{inspectionDetails?.sku}</Text>
             </div>
 
@@ -162,7 +162,7 @@ const InspectionDetails = () => {
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product eN standard:</Text>
+              <Text strong className="">Product en standard:</Text>
               <Text className="">{inspectionDetails?.enStandard}</Text>
             </div>
 
