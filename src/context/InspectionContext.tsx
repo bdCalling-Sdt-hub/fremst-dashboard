@@ -56,8 +56,6 @@ export const InspectionProvider = ({ children }: { children: React.ReactNode }) 
     step: [],
   });
 
-
-
   const updateStepData = (stepName: string, answers: StepAnswer[]) => {
     setInspectionData((prevState) => {
       // Check if the step already exists

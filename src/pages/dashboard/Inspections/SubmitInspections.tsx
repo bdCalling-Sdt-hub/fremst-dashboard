@@ -83,168 +83,164 @@ const SubmitInspections = () => {
 
 
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    const inspectionDate = moment().format("YYYY-MM-DD");
-
-    const padding = 15;
-    const pageWidth = doc.internal.pageSize.width;
-
-    doc.addImage("/pdflogo.png", "PNG", 15, 10, 45, 15);
-
-    doc.setFontSize(16);
-    const reportTitle = "Inspection Report - Denton Maddox";
-    const textWidth = doc.getTextWidth(reportTitle);
-    doc.text(reportTitle, pageWidth - textWidth - padding, 20);
-
-    doc.setFontSize(12);
-
-    // Text content with padding
-    doc.text(`Customer: ${customerName || "Unknown"}`, padding, 40);
-    doc.text(
-      `Protocol ID: ${inspectionData.protocolId || "Unknown"}`,
-      pageWidth - 80 - padding,
-      40
-    );
-
-    doc.text(`Employee: ${inspectionData.username || "Unknown"}`, padding, 45);
-    doc.text(
-      `Product Name: ${productName || "Unknown"}`,
-      pageWidth - 80 - padding,
-      45
-    );
-
-    doc.text(`Date: ${inspectionDate}`, padding, 50);
-    doc.text(
-      `Storage Location:  ${inspectionData.storageLocation || "Unknown"}`,
-      pageWidth - 80 - padding,
-      50
-    );
-
-    doc.text(
-      `Product SKU:  ${inspectionData.sku || "Unknown"}`,
-      pageWidth - 80 - padding,
-      55
-    );
-    doc.text(
-      `Product Brand: ${inspectionData.brand || "Unknown"}`,
-      pageWidth - 80 - padding,
-      60
-    );
-
-    // Table setup
-    const startX = padding;
-    const startY = 70;
-    const cellPadding = 5;
-    const rowHeight = 10;
-    const colWidths = [60, 50, 70]; 
-
-    // Draw table header
-    const headers = ["Control Points", "OK", "Comments"];
-    let currentY = startY;
-    let currentX = startX;
-
-    doc.setFont("helvetica", "bold");
-    headers.forEach((header, i) => {
-      const colWidth = colWidths[i];
-      doc.rect(currentX, currentY, colWidth, rowHeight);
-      doc.text(header, currentX + cellPadding, currentY + rowHeight / 2 + 2);
-      currentX += colWidth;
-    });
-
-    currentX = startX;
-    currentY += rowHeight;
-
-    // Table body
-    doc.setFont("helvetica", "normal");
-    const rows = inspectionData?.step?.flatMap((step) =>
-      step.answers.map((answer) => [
-        answer.question || "N/A",
-        answer.isYes ? "YES" : "NO",
-        answer.comment || "N/A",
-      ])
-    ) || [];
-
-    rows.forEach((row) => {
-      row.forEach((cell, i) => {
-        const colWidth = colWidths[i];
-        doc.rect(currentX, currentY, colWidth, rowHeight);
-        doc.text(cell.toString(), currentX + cellPadding, currentY + rowHeight / 2 + 2);
-        currentX += colWidth;
-      });
-      currentX = startX;
-      currentY += rowHeight;
-    });
-
-    const pageHeight = doc.internal.pageSize.height;
-    const watermarkText = "FREMST";
-
-    // Set font properties
-    doc.setFontSize(110);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(90, 91, 157);
-
-    // Set transparency
-    doc.saveGraphicsState();
-    doc.setGState(new doc.GState({ opacity: 0.1 }));
-
-    const centerX = (pageWidth - textWidth) / 2.5;
-    const centerY = pageHeight / 3;
-
-    // Draw rotated watermark
-    const angle = -40;
-    doc.text(watermarkText, centerX, centerY, { angle });
-
-    // Restore graphics state to remove transparency settings
-    doc.restoreGraphicsState();
-
-    doc.setFontSize(12);
-    // doc.setTextColor(0, 0, 0);   
-
-    const isApproved = inspectionData.isApproved;
-    const approvalText = isApproved ? "approved" : "not approved";
-
-    currentY = rows.length > 0 ? startY + rowHeight * (rows.length + 1) : startY;
-
-    const baseText = "The equipment is "; 
-    const endText = " as fall protection equipment";
-    let textX = padding;
-    let textY = currentY + 10;
-
-    // Set font and default text color (black)
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-
-    doc.text(baseText, textX, textY);
-    const baseTextWidth = doc.getTextWidth(baseText);
-
-    if (isApproved) {
-      doc.setTextColor(0, 128, 0);
-    } else {
-      doc.setTextColor(255, 0, 0);
-    }
-
-    doc.text(approvalText, textX + baseTextWidth, textY);
-    doc.setTextColor(0, 0, 0);
-    const approvalTextWidth = doc.getTextWidth(approvalText);
-    doc.text(endText, textX + baseTextWidth + approvalTextWidth, textY);
-
-    doc.text(
-      `The next inspection should take place within ${month} months from the inspection`,
-      padding,
-      currentY + 15
-    );
-    doc.text(
-      `Inspection date & place: ${inspectionDate}`,
-      padding,
-      currentY + 22
-    );
-
-    // Generate PDF as Blob or Download
-    const pdfBlob = doc.output("blob");
-    return pdfBlob;
-  };
+  // const generatePDF = () => {
+  //   const doc = new jsPDF();
+  //   const inspectionDate = moment().format("YYYY-MM-DD");
+  
+  //   const padding = 15;
+  //   const pageWidth = doc.internal.pageSize.width;
+  
+  //   doc.addImage("/pdflogo.png", "PNG", 15, 10, 45, 15);
+  
+  //   doc.setFontSize(16);
+  //   const reportTitle = "Inspection Report - Denton Maddox";
+  //   const textWidth = doc.getTextWidth(reportTitle);
+  //   doc.text(reportTitle, pageWidth - textWidth - padding, 20);
+  //   doc.setFontSize(12);
+  //   doc.text(`Customer: ${customerName || "Unknown"}`, padding, 40);
+  //   doc.text(
+  //     `Protocol ID: ${inspectionData.protocolId || "Unknown"}`,
+  //     pageWidth - 80 - padding,
+  //     40
+  //   );
+  
+  //   doc.text(`Employee: ${inspectionData.username || "Unknown"}`, padding, 45);
+  //   doc.text(
+  //     `Product Name: ${productName || "Unknown"}`,
+  //     pageWidth - 80 - padding,
+  //     45
+  //   );
+  
+  //   doc.text(`Date: ${inspectionDate}`, padding, 50);
+  //   doc.text(
+  //     `Storage Location:  ${inspectionData.storageLocation || "Unknown"}`,
+  //     pageWidth - 80 - padding,
+  //     50
+  //   );
+  
+  //   doc.text(
+  //     `Product SKU:  ${inspectionData.sku || "Unknown"}`,
+  //     pageWidth - 80 - padding,
+  //     55
+  //   );
+  //   doc.text(
+  //     `Product Brand: ${inspectionData.brand || "Unknown"}`,
+  //     pageWidth - 80 - padding,
+  //     60
+  //   );
+  
+  //   const startX = padding;
+  //   const startY = 70;
+  //   const cellPadding = 5;
+  //   const rowHeight = 10;
+  //   const colWidths = [90, 30, 60];
+  
+  //   const headers = ["Control Points", "OK", "Comments"];
+  //   let currentY = startY;
+  //   let currentX = startX;
+  
+  //   doc.setFont("helvetica", "bold");
+  //   headers.forEach((header, i) => {
+  //     const colWidth = colWidths[i];
+  //     doc.rect(currentX, currentY, colWidth, rowHeight);
+  //     doc.text(header, currentX + cellPadding, currentY + rowHeight / 2 + 2);
+  //     currentX += colWidth;
+  //   });
+  
+  //   currentX = startX;
+  //   currentY += rowHeight;
+  
+  //   // Table body
+  //   doc.setFont("helvetica", "normal");
+  //   const rows =
+  //     inspectionData?.step?.flatMap((step) =>
+  //       step.answers.map((answer) => [
+  //         answer.question || "N/A",
+  //         answer.isYes ? "YES" : "NO",
+  //         answer.comment || "N/A",
+  //       ])
+  //     ) || [];
+  
+  //   rows.forEach((row) => {
+  //     let maxHeight = 0;
+  //     row.forEach((cell, i) => {
+  //       const colWidth = colWidths[i];
+  //       const textLines = doc.splitTextToSize(cell.toString(), colWidth - cellPadding * 2);
+  //       const cellHeight = textLines.length * 5 + cellPadding;
+  //       maxHeight = Math.max(maxHeight, cellHeight);
+  
+  //       // Draw cell
+  //       doc.rect(currentX, currentY, colWidth, cellHeight);
+  //       doc.text(textLines, currentX + cellPadding, currentY + cellPadding);
+  //       currentX += colWidth;
+  //     });
+  //     currentX = startX;
+  //     currentY += maxHeight;
+  //   });
+  
+  //   const pageHeight = doc.internal.pageSize.height;
+  //   const watermarkText = "FREMST";
+  
+  //   // Set font properties
+  //   doc.setFontSize(110);
+  //   doc.setFont("helvetica", "bold");
+  //   doc.setTextColor(90, 91, 157);
+  
+  //   // Set transparency
+  //   doc.saveGraphicsState();
+  //   doc.setGState(new doc.GState({ opacity: 0.1 }));
+  
+  //   const centerX = (pageWidth - textWidth) / 2.5;
+  //   const centerY = pageHeight / 3;
+  
+  //   // Draw rotated watermark
+  //   const angle = -40;
+  //   doc.text(watermarkText, centerX, centerY, { angle });
+  
+  //   // Restore graphics state to remove transparency settings
+  //   doc.restoreGraphicsState();
+  
+  //   doc.setFontSize(12);
+  //   doc.setTextColor(0, 0, 0);
+  
+  //   const isApproved = inspectionData.isApproved;
+  //   const approvalText = isApproved ? "approved" : "not approved";
+  
+  //   currentY += 10;
+  
+  //   const baseText = "The equipment is ";
+  //   const endText = " as fall protection equipment";
+  //   let textX = padding;
+  
+  //   doc.text(baseText, textX, currentY);
+  //   const baseTextWidth = doc.getTextWidth(baseText);
+  
+  //   if (isApproved) {
+  //     doc.setTextColor(0, 128, 0);
+  //   } else {
+  //     doc.setTextColor(255, 0, 0);
+  //   }
+  
+  //   doc.text(approvalText, textX + baseTextWidth, currentY);
+  //   doc.setTextColor(0, 0, 0);
+  //   const approvalTextWidth = doc.getTextWidth(approvalText);
+  //   doc.text(endText, textX + baseTextWidth + approvalTextWidth, currentY);
+  
+  //   doc.text(
+  //     `The next inspection should take place within ${month} months from the inspection`,
+  //     padding,
+  //     currentY + 10
+  //   );
+  //   doc.text(
+  //     `Inspection date & place: ${inspectionDate}`,
+  //     padding,
+  //     currentY + 17
+  //   );
+  
+  //   // Generate PDF as Blob or Download
+  //   const pdfBlob = doc.output("blob");
+  //   return pdfBlob;
+  // };
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -254,8 +250,8 @@ const SubmitInspections = () => {
     }
     formData.append("data", JSON.stringify(inspectionData));
 
-    const pdfBlob = generatePDF();
-    formData.append("pdfReport", pdfBlob, "generated.pdf");
+    // const pdfBlob = generatePDF();
+    // formData.append("pdfReport", pdfBlob, "generated.pdf");
 
     try {
       const res = await createInspection(formData).unwrap();

@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getFromLocalStorage } from "../../utils/LocalStorage";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://164.90.205.5:3001/api/v1", 
-  // baseUrl: "http://192.168.10.15:3001/api/v1",  
+  // baseUrl: "http://164.90.205.5:3001/api/v1", 
+  baseUrl: "http://192.168.10.15:3001/api/v1",  
   prepareHeaders: (headers) => {
     const token = getFromLocalStorage("AccessToken"); 
    
@@ -21,5 +21,5 @@ export const baseApi = createApi({
   endpoints: () => ({}),
 }); 
 
-// export const imageUrl = "http://192.168.10.15:3001"; 
-export const imageUrl = "http://164.90.205.5:3001"; 
+export const imageUrl = "http://192.168.10.15:3001"; 
+// export const imageUrl = "http://164.90.205.5:3001"; 

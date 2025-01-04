@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useInspection } from '../../../context/InspectionContext';
 import { useGetAllCustomersQuery } from '../../../redux/features/Dashboard/customersApi';
 import { BsArrowLeft } from 'react-icons/bs';
-import { Form, Input, Select } from 'antd';
+import { Form, Select } from 'antd';
 import CommonInput from '../../../components/shared/CommonInput';
 import { useTranslation } from 'react-i18next';
-import { useGetProfileQuery } from '../../../redux/features/auth/authApi';
 import { useGetAllBrandsQuery } from '../../../redux/features/Dashboard/brandApi';
+import { useGetAllEmployeesQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 
 const InspectionsCreate = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const { data: profile } = useGetProfileQuery(undefined)
-  const { inspectionData, updateInspectionData } = useInspection();
-  //console.log(profile?.data?.name);
+  const { inspectionData, updateInspectionData } = useInspection(); 
+  const [selectedCustomerId , setSelectedCustomerId] = useState<string | undefined>() 
+  const {data:allEmployees} = useGetAllEmployeesQuery(selectedCustomerId)
   const product = queryParams.get('id');
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
   const { t } = useTranslation(); 
-  const {data:allBrands} = useGetAllBrandsQuery({}) 
+  const {data:allBrands} = useGetAllBrandsQuery({})   
 
   useEffect(() => {
     if (!inspectionData.product && product) {
@@ -28,22 +28,27 @@ const InspectionsCreate = () => {
     }
   }, [product, inspectionData, updateInspectionData]);
 
+ 
+  const handleCustomerChange = (value:any) => {    
+    const selectedCustomer = JSON.parse(value);
+    setSelectedCustomerId(selectedCustomer?.id)
+  };
 
-
-  const onFinish = (values: any) => {
+  const onFinish = (values: { customer: string; sku: string; enStandard: string; serialNo: string; brand: string; username: string; storageLocation: string; }) => {
+    const selectedCustomer = JSON.parse(values.customer);
     const protocolId = Array.from({ length: 6 }, () => Math.floor(Math.random() * 100) + 1).join('');
-
-    updateInspectionData('customer', values.customer);
+  
+    updateInspectionData('customer', selectedCustomer.id);
     updateInspectionData('sku', values.sku);
     updateInspectionData('enStandard', values.enStandard);
     updateInspectionData('serialNo', values.serialNo);
     updateInspectionData('brand', values.brand);
-    updateInspectionData('companyName', values.companyName);
+    updateInspectionData('companyName', selectedCustomer.name);
     updateInspectionData('username', values.username);
     updateInspectionData('storageLocation', values.storageLocation);
     updateInspectionData('protocolId', protocolId);
-
-    navigate(`/inspections-creates/${category}?id=${product}`);
+  
+    navigate(`/inspections-creates/${category}?id=${product}`); 
   };
 
 
@@ -57,10 +62,7 @@ const InspectionsCreate = () => {
       </div>
 
       {/* Form */}
-      <Form layout='vertical' className='w-1/2' onFinish={onFinish}
-        initialValues={{
-          username: profile?.data?.name,
-        }} >
+      <Form layout='vertical' className='w-1/2' onFinish={onFinish} >
         <div className='pb-[5px]'>
           <CommonInput name='serialNo' label='Serial no' />
           <CommonInput name='enStandard' label='En standard' />
@@ -83,29 +85,7 @@ const InspectionsCreate = () => {
                 </Select.Option>
               ))}
             </Select>
-          </Form.Item> 
-
-          <CommonInput name='companyName' label='Company Name' />
-          <Form.Item
-            name="username"
-            label={<p className='text-[14px] font-semibold'>User name</p>}
-
-          >
-            <Input
-
-              style={{
-                border: "1px solid #BABABA",
-                height: "48px",
-                borderRadius: "8px",
-                outline: "none",
-                width: "100%",
-                padding: "8px",
-                background: "white",
-              }}
-            
-              readOnly
-            />
-          </Form.Item>
+          </Form.Item>  
 
 
           <Form.Item
@@ -117,15 +97,44 @@ const InspectionsCreate = () => {
               placeholder="Select a customer"
               style={{ width: "100%", height: "48px" }}
               showSearch
-              optionFilterProp="children"
+              optionFilterProp="children" 
+              onChange={(value) => {handleCustomerChange(value)}}
             >
-              {customersData?.data?.map((customer: { _id: string, contactPerson: string, email: string }) => (
-                <Select.Option key={customer?._id} value={customer?._id}>
-                  {customer?.contactPerson} ({customer?.email})
-                </Select.Option>
+              {customersData?.data?.map((customer: { _id: string, companyName: string}) => (
+               <Select.Option
+               key={customer._id}
+               value={JSON.stringify({ id: customer._id, name: customer.companyName })}
+             >
+               {customer.companyName}
+             </Select.Option>
               ))}
             </Select>
-          </Form.Item>
+          </Form.Item>  
+
+
+          <Form.Item
+            name="username"
+            label={<p className='text-[14px] font-semibold'>Select Employee</p>}
+            rules={[{ required: true, message: `Customer is required` }]} 
+          >
+            <Select
+              placeholder="Select a employee"
+              style={{ width: "100%", height: "48px" }}
+              showSearch
+              optionFilterProp="children"  
+              disabled={!selectedCustomerId}
+            >
+              {allEmployees?.data?.map((customer: { _id: string, name: string}) => (
+               <Select.Option
+               key={customer._id}
+               value={customer.name}
+             >
+               {customer.name}
+             </Select.Option>
+              ))}
+            </Select>
+          </Form.Item> 
+   
         </div>
 
         <Form.Item>
