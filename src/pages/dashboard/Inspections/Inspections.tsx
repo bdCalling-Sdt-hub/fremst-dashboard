@@ -2,7 +2,7 @@ import { Input, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useGetAllInspectionsQuery, useGetPDFMutation,  } from '../../../redux/features/Dashboard/inspectionsApi';
+import { useGetAllInspectionsQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { imageUrl } from '../../../redux/base/baseApi';
@@ -12,7 +12,7 @@ const Inspections = () => {
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const { data: allInspections, isLoading } = useGetAllInspectionsQuery({ page, search: searchTerm });
-  const [fetchPDF] = useGetPDFMutation();
+ 
 
   const data = allInspections?.data?.map((value: any, index: number) => ({
     key: index + 1,
@@ -56,12 +56,13 @@ const Inspections = () => {
       title: t('latestInspection'),
       key: 'latestInspection',
       render: (_: any, record: any) => (
-        <button
-          className="text-blue-500 underline"
-          onClick={ () => {`${imageUrl}/api/v1/pdf/create/${record.inspectionId}`}}
-        >
-          View PDF
-        </button>
+        <a
+        className="text-blue-500 underline"
+        href={`${imageUrl}/api/v1/pdf/create/${record.inspectionId}`}
+        download
+      >
+        View PDF
+      </a>
       ),
     },
     {

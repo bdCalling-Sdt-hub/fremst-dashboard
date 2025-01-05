@@ -101,7 +101,14 @@ const InspectionsDetailsModal = ({ open, setOpen, itemDetails }: { open: boolean
 
                 <div className="flex items-center gap-5">
                   <Text strong className="">Inspection history:</Text>
-                  <Link href={`${imageUrl}${inspectionDetails?.pdfReport}`} target="_blank" className="text-blue-600 ">Inspection.pdf</Link>
+                  <a
+                    className="text-blue-600"
+                    href={`${imageUrl}/api/v1/pdf/create/${inspectionDetails?._id}`}
+                    download
+                  >
+                    View PDF
+                  </a>
+
                 </div>
 
                 <div className="flex items-center gap-5">

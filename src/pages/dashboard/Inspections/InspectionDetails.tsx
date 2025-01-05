@@ -83,7 +83,13 @@ const InspectionDetails = () => {
       title: t("report"),
       dataIndex: 'report',
       key: 'report',
-      render: (report: any) => <Link href={report} target="_blank" className="text-primary">Inspection.pdf</Link>,
+      render: (_: any, record: any) =>    <a
+      className="text-primary "
+      href={`${imageUrl}/api/v1/pdf/create/${record.id}`}
+      download
+    >
+     Inspection.pdf
+    </a>,
     },
     { title: t("inspectionDate") , dataIndex: 'date', key: 'date' }, 
     
@@ -91,7 +97,7 @@ const InspectionDetails = () => {
       title: t("overview"),
       key: 'action',
       render: (_: any, record: any) => <div> 
-        { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button> : "" } ,
+        { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button> : "" } 
       </div>  
     },
   ];
@@ -182,8 +188,14 @@ const InspectionDetails = () => {
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Inspection history:</Text>
-              <Link href={`${imageUrl}${inspectionDetails?.pdfReport}`} target="_blank" className="text-blue-600 ">Inspection.pdf</Link>
+              <Text strong className="">Inspection history:</Text> 
+              <a
+        className="text-blue-500 "
+        href={`${imageUrl}/api/v1/pdf/create/${userId}`}
+        download
+      >
+       Inspection.pdf
+      </a>
             </div>
 
             <div className="flex items-center gap-5">
