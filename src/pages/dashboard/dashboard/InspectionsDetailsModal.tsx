@@ -2,7 +2,7 @@ import { Checkbox, Modal, Typography } from "antd";
 import { imageUrl } from "../../../redux/base/baseApi";
 import moment from "moment";
 import { useInspectionByIdQuery } from "../../../redux/features/Dashboard/homeApi";
-const { Text, Link } = Typography;
+const { Text } = Typography;
 export interface Inspection {
   _id: string;
   sku: string;
