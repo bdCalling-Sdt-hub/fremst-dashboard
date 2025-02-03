@@ -9,8 +9,8 @@ export default defineConfig({
 
   // Configure the development server
   server: {
-    // host: '192.168.10.80',    
-    host: '164.90.205.5',  
-    // port: 5000,      
+    host: '10.0.70.92',    
+    // host: '164.90.205.5',  
+    port: 5000,      
   },
 });
