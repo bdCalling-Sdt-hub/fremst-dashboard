@@ -49,7 +49,7 @@ const HeaderDashboard = () => {
         <div className="flex items-center justify-end gap-3 h-full">
           {/* Language Selector */}
           <Select
-            defaultValue={"sw"} // Use the current language
+            defaultValue={"sv"} 
             style={{ width: 120, height: '50px' }}
             onChange={handleSelectLanguage}
           >
@@ -63,7 +63,7 @@ const HeaderDashboard = () => {
                 English
               </div>
             </Option>
-            <Option value="sw">
+            <Option value="sv">
               <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
                 <img
                   src="/flag.png"

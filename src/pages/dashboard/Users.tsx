@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck 
 import { ConfigProvider, Flex, Table } from 'antd';
 import { useGetAllUsersQuery, useHoldUserMutation } from '../../redux/features/Dashboard/userApi';
 import { useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import AddUserModal from './AddUserModal';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../components/shared/LanguageContext';
-import axios from 'axios'; 
+import { translateText } from '../../components/shared/translationUtils';
 
 const Users = () => {  
     const [page , setPage] = useState(1); 
@@ -16,11 +16,6 @@ const Users = () => {
     const { t } = useTranslation(); 
     const { language } = useLanguage();  
     const [translatedUsers, setTranslatedUsers] = useState([]);  
-  
-    const API_KEY = import.meta.env.VITE_GOOGLE_TRANSLATE_API_KEY; 
-    const translateEndpoint = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`;
-
-    console.log(allUsers);
 
     useEffect(() => {
         if (allUsers && allUsers.data) {
@@ -51,19 +46,6 @@ const Users = () => {
         });
     };
 
-    // Translate a single piece of text
-    const translateText = async (text: string, targetLang: string) => {
-        try {
-            const response = await axios.post(translateEndpoint, {
-                q: text,
-                target: targetLang,
-            });
-            return response.data.data.translations[0].translatedText;
-        } catch (error) {
-            console.error('Error translating text:', error);
-            return text; 
-        }
-    };
 
     
     const translateUserData = async (usersData: any[], targetLang: string) => {
@@ -156,7 +138,7 @@ const Users = () => {
             <ConfigProvider>
                 <Table
                     columns={columns}
-                    dataSource={translatedUsers.length > 0 ? translatedUsers : []}  // Only show translated users when available
+                    dataSource={translatedUsers.length > 0 ? translatedUsers : []} 
                     pagination={{
                         current: page,
                         total: allUsers?.pagination?.total || 0,

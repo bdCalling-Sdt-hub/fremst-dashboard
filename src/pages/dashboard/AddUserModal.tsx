@@ -11,7 +11,8 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
 
   const [form] = Form.useForm(); 
   const [createUser , {isLoading , isError , isSuccess , data , error}] = useCreateUserMutation() 
- const {t} = useTranslation()
+ const {t} = useTranslation() 
+ 
   useEffect(() => {
     if (isSuccess) { 
       if (data) {
@@ -59,20 +60,20 @@ const AddUserModal = ({ open, setOpen }:{open:boolean , setOpen:(open:boolean)=>
 
       <Form layout='vertical' className='' onFinish={onFinish} form={form}>  
         <div className='  pt-[23px] pb-[5px] rounded-2xl'>
-  <CommonInput name='name' label='User name' />
-  <CommonInput name='email' label='Email' /> 
-  <CommonInput name='companyName' label='Company name' /> 
+  <CommonInput name='name' label={t("userName")} />
+  <CommonInput name='email' label={t("email")} /> 
+  <CommonInput name='companyName' label={t("companyName")} /> 
   <Form.Item name="password"  
-        label={<p className='text-[14px] font-semibold'>Password</p>} 
+        label={<p className='text-[14px] font-semibold'>{t("password")}</p>} 
         rules={[
           {
             required: true,
-            message: "Please input your new Password!",
+            message: t("pleaseEnterPassword"),
           }, 
           
 {
 min: 8,
-message: "Password must be at least 8 characters long!",
+message: t("passwordMinLength") ,
 },
         ]} 
         

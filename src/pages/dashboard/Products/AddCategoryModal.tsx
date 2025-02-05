@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PiImageThin } from "react-icons/pi";
 import { useAddNewStepMutation } from "../../../redux/features/Dashboard/productsApi";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 
 const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOpen: (open: boolean) => void, id: string | null, refetch: any }) => {
@@ -11,32 +12,33 @@ const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOp
     const [form] = Form.useForm()
     const [imgFile, setImgFile] = useState(null);
     const [imageUrl, setImageUrl] = useState()
-    const [addNewStep , {isLoading , isError , isSuccess , data , error}] = useAddNewStepMutation() 
+    const [addNewStep, { isLoading, isError, isSuccess, data, error }] = useAddNewStepMutation()
+    const { t } = useTranslation();
 
     useEffect(() => {
-        if (isSuccess) { 
-          if (data) {
-            Swal.fire({
-              text: data?.message ,
-              icon: "success",
-              timer: 1500,
-              showConfirmButton: false
-            }).then(() => {
-              setOpen(false); 
-              form.resetFields();
-             refetch()
-            });
-          }
-    
+        if (isSuccess) {
+            if (data) {
+                Swal.fire({
+                    text: data?.message,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    setOpen(false);
+                    form.resetFields();
+                    refetch()
+                });
+            }
+
         }
         if (isError) {
-          Swal.fire({ 
-            //@ts-ignore
-            text: error?.data?.message,  
-            icon: "error",
-          });
+            Swal.fire({
+                //@ts-ignore
+                text: error?.data?.message,
+                icon: "error",
+            });
         }
-      }, [isSuccess, isError, error, data, ])    
+    }, [isSuccess, isError, error, data,])
 
     const handleChange = (e: any) => {
         const file = e.target.files[0]
@@ -66,17 +68,17 @@ const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOp
             open={open}
             onCancel={() => { setOpen(false); form.resetFields() }}
             width={500}
-            title={<p className='text-[18px] font-semibold' > Add category </p>}
+            title={<p className='text-[18px] font-semibold' >{t("addCategory")} </p>}
             footer={null}
         >
             <div >
 
                 <Form form={form} layout="vertical" onFinish={onFinish}>
 
-                    <CommonInput name='name' label='Category name' />
+                    <CommonInput name='name' label={t('categoryName')} />
 
                     <div className=' py-[4px] w-full'>
-                        <p className="text-[14px] font-semibold py-1">Image</p>
+                        <p className="text-[14px] font-semibold py-1">{t("image")}</p>
 
                         <label
                             htmlFor="image"
@@ -107,7 +109,9 @@ const AddCategoryModal = ({ open, setOpen, id, refetch }: { open: boolean, setOp
                     </div>
 
                     <Form.Item className=" flex items-center justify-end ">
-                        <button type="submit" className=" bg-primary text-[14px] font-medium w-[100px]  text-white py-2 rounded-lg mt-5"> {isLoading ? "Saving..." : "Save"}</button>
+                        <button type="submit" className=" bg-primary text-[14px] font-medium w-[100px]  text-white py-2 rounded-lg mt-5">  {isLoading ? t("saving") : t("save")}
+
+                        </button>
                     </Form.Item>
 
                 </Form>

@@ -2,12 +2,14 @@ import { Form, Input, Modal, Radio } from "antd";
 import { useAddQuestionMutation, useUpdateQuestionMutation } from "../../../redux/features/Dashboard/productsApi";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 
 const AddQuestionModal = ({open , setOpen , productId , stepId , setEditDetails , editDetails , refetch }:{open:boolean , setOpen:(open:boolean)=>void , productId:string|null , stepId:string|null , setEditDetails:any , editDetails:any , refetch:any}) => { 
     const [form] = Form.useForm()  
     const [addQuestion , { isLoading }] = useAddQuestionMutation()
-    const [updateQuestion] = useUpdateQuestionMutation()
+    const [updateQuestion] = useUpdateQuestionMutation() 
+    const { t } = useTranslation();
 
     useEffect(()=>{ 
         if(editDetails){
@@ -90,61 +92,58 @@ const AddQuestionModal = ({open , setOpen , productId , stepId , setEditDetails 
 
 
     return ( 
-        <Modal
-        centered
-        open={open}
-        onCancel={() => { setOpen(false); form.resetFields() , setEditDetails(null) }}
-        width={500}
-        title={<p className='text-[18px] font-semibold' > {editDetails ? "Edit question" : "Add question"}  </p>}
-        footer={null}
-    >
-        <div> 
-        <Form form={form} layout="vertical" onFinish={onFinish} className="py-4" initialValues={{
-            question:editDetails?.question , 
-        }}>
-  <Form.Item
-    label={
-      <p className="text-[16px] font-medium">Question name</p>
-    }
-    name="question" 
-    rules={[{ required: true, message: 'Please enter the question name!' }]} 
+      <Modal
+      centered
+      open={open}
+      onCancel={() => { setOpen(false); form.resetFields(), setEditDetails(null) }}
+      width={500}
+      title={<p className='text-[18px] font-semibold'>{editDetails ? t("editQuestion") : t("addQuestion")}</p>}
+      footer={null}
   >
-    <Input.TextArea
-      rows={2}
-      style={{
-        border: "1px solid #BABABA",
-        resize: "none",
-        borderRadius: "8px",
-        outline: "none",
-        width: "450px",
-        padding: "8px",
-        background: "white",
-      }}
-    />
-  </Form.Item>
-
-  <Form.Item
-    name="isComment" 
-    label={
-        <p className="text-[16px] font-medium">Comment</p>
-      }
-    rules={[{ required: true, message: 'Please select an answer!' }]} 
-  >
-    <div className="flex items-center space-x-2" >
-      <Radio.Group defaultValue={editDetails?.isComment ? "true" : "false"}>
-        <Radio value="true" className="text-[#45C518]">YES</Radio>
-        <Radio value="false" className="text-[#FF3E3E]">NO</Radio>
-      </Radio.Group>
-    </div>
-  </Form.Item>
-
-  <Form.Item className=" flex items-center justify-end">
-    <button type="submit" className="bg-primary text-white w-[100px] h-[40px] rounded">{isLoading ? 'Loading...' : 'Submit'}</button>
-  </Form.Item>
-</Form>
-            
-        </div> 
-        </Modal>
+      <div> 
+          <Form form={form} layout="vertical" onFinish={onFinish} className="py-4" initialValues={{
+              question: editDetails?.question, 
+          }}>
+              <Form.Item
+                  label={<p className="text-[16px] font-medium">{t("questionName")}</p>}
+                  name="question" 
+                  rules={[{ required: true, message: t("pleaseEnterQuestionName") }]} 
+              >
+                  <Input.TextArea
+                      rows={2}
+                      style={{
+                          border: "1px solid #BABABA",
+                          resize: "none",
+                          borderRadius: "8px",
+                          outline: "none",
+                          width: "450px",
+                          padding: "8px",
+                          background: "white",
+                      }}
+                  />
+              </Form.Item>
+  
+              <Form.Item
+                  name="isComment" 
+                  label={<p className="text-[16px] font-medium">{t("comment")}</p>}
+                  rules={[{ required: true, message: t("pleaseSelectAnswer") }]} 
+              >
+                  <div className="flex items-center space-x-2">
+                      <Radio.Group defaultValue={editDetails?.isComment ? "true" : "false"}>
+                          <Radio value="true" className="text-[#45C518]">{t("yes")}</Radio>
+                          <Radio value="false" className="text-[#FF3E3E]">{t("no")}</Radio>
+                      </Radio.Group>
+                  </div>
+              </Form.Item>
+  
+              <Form.Item className="flex items-center justify-end">
+                  <button type="submit" className="bg-primary text-white w-[100px] h-[40px] rounded">
+                      {isLoading ? t("loading") : t("submit")}
+                  </button>
+              </Form.Item>
+          </Form>
+      </div> 
+  </Modal>
     );
 };
 

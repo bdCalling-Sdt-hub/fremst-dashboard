@@ -75,10 +75,10 @@ const {t} = useTranslation()
         <Form layout='vertical' className='w-2/3' onFinish={onFinish}>   
         <div className=" flex gap-10 w-full">
           <div className='pb-[5px] w-full'>
-    <CommonInput name='name' label='Product name' />
+    <CommonInput name='name' label={t("productName")}  />
           {/* image  */}
           <div className=' py-[4px] w-full'>
-                    <p className="text-[14px] font-semibold py-1">Upload product picture</p>
+                    <p className="text-[14px] font-semibold py-1">{t("uploadProductPicture")}</p>
 
                     <label
                         htmlFor="image"
@@ -113,7 +113,7 @@ const {t} = useTranslation()
    <Form.Item  className="flex items-center justify-end"> 
 
           <button type="submit" className="bg-primary text-white w-[150px] h-[50px] text-lg rounded-lg mt-5">
-     {isLoading ? "Loading..." : "Create"}  
+     {isLoading ? "Loading..." : t("create")}  
           </button>
    </Form.Item>
         </Form>

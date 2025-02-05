@@ -7,7 +7,7 @@ import { Form, Select } from 'antd';
 import CommonInput from '../../../components/shared/CommonInput';
 import { useTranslation } from 'react-i18next';
 import { useGetAllBrandsQuery } from '../../../redux/features/Dashboard/brandApi';
-import { useGetAllEmployeesQuery } from '../../../redux/features/Dashboard/inspectionsApi';
+// import { useGetAllEmployeesQuery } from '../../../redux/features/Dashboard/inspectionsApi'; 
 
 const InspectionsCreate = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const InspectionsCreate = () => {
   const queryParams = new URLSearchParams(location.search);
   const { inspectionData, updateInspectionData } = useInspection(); 
   const [selectedCustomerId , setSelectedCustomerId] = useState<string | undefined>() 
-  const {data:allEmployees} = useGetAllEmployeesQuery(selectedCustomerId)
+  // const {data:allEmployees} = useGetAllEmployeesQuery(selectedCustomerId) 
   const product = queryParams.get('id');
   const { category } = useParams();
   const { data: customersData } = useGetAllCustomersQuery({});
@@ -111,8 +111,9 @@ const InspectionsCreate = () => {
             </Select>
           </Form.Item>  
 
+          <CommonInput name='username' label='Select Employee' />
 
-          <Form.Item
+          {/* <Form.Item
             name="username"
             label={<p className='text-[14px] font-semibold'>Select Employee</p>}
             rules={[{ required: true, message: `Customer is required` }]} 
@@ -133,7 +134,7 @@ const InspectionsCreate = () => {
              </Select.Option>
               ))}
             </Select>
-          </Form.Item> 
+          </Form.Item>  */}
    
         </div>
 

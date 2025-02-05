@@ -117,13 +117,13 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
               />
               <div>
                 <p className="text-[#282828] font-medium text-[15px] pb-1">
-                  Last inspection date:{" "}
+             { t("lastInspectionDate") } :
                   <span className="font-medium text-[#535353]">
                     {moment(item.lastInspectionDate).format("YYYY-MM-DD")}
                   </span>
                 </p>
                 <p className="text-[#282828] font-medium text-[16px]">
-                  Inspection interval:{" "}
+                { t("inspectionInterval") } :
                   <span className="text-[#535353] font-medium text-[16px]">
                     {item.inspectionInterval}
                   </span>
@@ -142,17 +142,17 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
 
             <div>
               <p>
-                Next inspection:{" "}
+               { t("nextInspection") } :
                 <span className="font-medium text-[15px] pb-1 ">
                   {moment(item.nextInspectionDate).format("YYYY-MM-DD")}
                 </span>
               </p>
               <p className="font-medium text-[15px] pb-1 text-[#D2410A]">
-                Delayed: {item.delayedDays}
+                { t("delayed") }: {item.delayedDays}
               </p>
             </div>
             <button className="bg-primary text-white w-[152px]  rounded-lg h-[40px] font-medium" onClick={() => { setOpen(true), setItemDetails(item?._id) }}>
-              Details
+              {t("details")}
             </button>
           </div>
         ))}
