@@ -4,6 +4,7 @@ import { CiEdit } from 'react-icons/ci';
 import { useGetProfileQuery, useUpdateProfileMutation } from '../../../redux/features/auth/authApi';
 import { imageUrl } from '../../../redux/base/baseApi';
 import Swal from 'sweetalert2';
+import { t } from 'i18next';
 
 
 const EditProfile: React.FC = () => {
@@ -102,25 +103,25 @@ const EditProfile: React.FC = () => {
                 <Form.Item
                     label={
                         <label htmlFor="name" className="block text-primaryText mb-1 text-lg">
-                            Full name
+                           {t("fullName")}
                         </label>
                     }
                     name="name"
-                    rules={[{ required: true, message: 'Please input your full name!' }]}
+                    rules={[{ required: true, message: t("pleaseInputFullName") }]}
                 >
-                    <Input className="h-12" placeholder="Enter your name" />
+                    <Input className="h-12" placeholder={t("enterYourName")} />
                 </Form.Item>
 
                 <Form.Item
                     label={
                         <label htmlFor="email" className="block text-primaryText mb-1 text-lg">
-                            Email
+                            {t("email")}
                         </label>
                     }
                     name="email"
-                    rules={[{ required: true, message: 'Please input your email!' }]}
+                   
                 >
-                    <Input className="h-12" placeholder="Enter your email" readOnly />
+                    <Input className="h-12"  readOnly />
                 </Form.Item>
 
                 <Form.Item className="flex justify-center">
@@ -131,7 +132,7 @@ const EditProfile: React.FC = () => {
                         type="primary"
                         htmlType="submit"
                     >
-                      {isLoading ? "Updating..." : "Update"} 
+                      {isLoading ? `${t("loading")}` : `${t("save")}`} 
                     </Button>
                 </Form.Item>
             </Form>

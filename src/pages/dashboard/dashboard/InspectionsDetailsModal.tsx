@@ -2,6 +2,7 @@ import { Checkbox, Modal, Typography } from "antd";
 import { imageUrl } from "../../../redux/base/baseApi";
 import moment from "moment";
 import { useInspectionByIdQuery } from "../../../redux/features/Dashboard/homeApi";
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 export interface Inspection {
   _id: string;
@@ -27,7 +28,8 @@ export interface Inspection {
 const InspectionsDetailsModal = ({ open, setOpen, itemDetails }: { open: boolean, setOpen: (open: boolean) => void, itemDetails: string }) => {
 
   const { data } = useInspectionByIdQuery(itemDetails)
-  const inspectionDetails = data?.data
+  const inspectionDetails = data?.data 
+  const { t } = useTranslation()
 
   return (
     <div>
@@ -55,69 +57,69 @@ const InspectionsDetailsModal = ({ open, setOpen, itemDetails }: { open: boolean
               <div className="space-y-[2px]">
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="w-1/3">Product SKU:</Text>
+                  <Text strong className="w-1/3">{t("productSKU")}:</Text>
                   <Text className="w-2/3">{inspectionDetails?.sku}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product name:</Text>
+                  <Text strong className="">{t("productName")}:</Text>
                   <Text className="">{inspectionDetails?.productName}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product brand:</Text>
+                  <Text strong className="">{t("productBrand")}:</Text>
                   <Text className="">{inspectionDetails?.brand}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product type:</Text>
+                  <Text strong className="">{t("productType")}:</Text>
                   <Text className="">{inspectionDetails?.type}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product serial No:</Text>
+                  <Text strong className="">{t("productSerialNo")}:</Text>
                   <Text className="">{inspectionDetails?.serialNo}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product EN Standard:</Text>
+                  <Text strong className="">{t("productEnStandard")}:</Text>
                   <Text className="">{inspectionDetails?.enStandard}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Inspection interval:</Text>
+                  <Text strong className="">{t("inspectionInterval")}:</Text>
                   <Text className="">{inspectionDetails?.inspectionInterval}</Text>
                 </div>
 
                 <div className="flex items-center gap-5 ">
-                  <Text strong className="">Latest inspection date:</Text>
+                  <Text strong className="">{t("latestInspectionDate")}:</Text>
                   <Text className=""> {moment(inspectionDetails?.lastInspectionDate).format("YYYY-MM-DD")}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Product active:</Text>
+                  <Text strong className="">{t("productActive")}:</Text>
                   <Checkbox checked={inspectionDetails?.isActive} className="" />
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Inspection history:</Text>
+                  <Text strong className="">{t("inspectionHistory")}:</Text>
                   <a
                     className="text-blue-600"
                     href={`${imageUrl}/api/v1/pdf/create/${inspectionDetails?._id}`}
                     download
                   >
-                    View PDF
+                    {t("inspection")} pdf
                   </a>
 
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Company name:</Text>
+                  <Text strong className="">{t("companyName")}:</Text>
                   <Text className="">{inspectionDetails?.companyName}</Text>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Text strong className="">Contact person:</Text>
+                  <Text strong className="">{t("contactPerson")}:</Text>
                   <Text className="">{inspectionDetails?.contactPerson}</Text>
                 </div>
               </div>

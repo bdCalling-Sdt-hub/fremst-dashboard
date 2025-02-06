@@ -11,6 +11,7 @@ import "jspdf-autotable";
 import { useGetProductByIdQuery } from "../../../redux/features/Dashboard/productsApi";
 import { useGetCustomerByIdQuery } from "../../../redux/features/Dashboard/customersApi";
 import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 const SubmitInspections = () => {
   const [imgFile, setImgFile] = useState<File | null>(null);
@@ -265,7 +266,7 @@ const SubmitInspections = () => {
     <div className="w-full">
       <div className="flex gap-10 w-2/3">
         <div className="w-full">
-          <p className="text-[14px] font-semibold py-2">Inspection summary</p>
+          <p className="text-[14px] font-semibold py-2">{t("inspectionSummary")}</p>
           <Input.TextArea rows={8} className="w-full rounded-lg resize-none" onChange={handleSummaryChange} />
 
           <div className="flex gap-5 my-10">
@@ -273,13 +274,13 @@ const SubmitInspections = () => {
               className="w-1/2 border border-[#229E45] text-[#229E45] hover:bg-[#229E45] hover:text-white h-[45px] rounded-md font-medium"
               onClick={() => handleApproval(true)}
             >
-              Approved
+              {t("approved")}
             </button>
             <button
               className="w-1/2 bg-[#D2410A] h-[45px] rounded-md text-white border border-[#D2410A] hover:text-[#D2410A] hover:bg-transparent font-medium"
               onClick={() => handleApproval(false)}
             >
-              Rejected
+              {t("rejected")}
             </button>
           </div>
 
@@ -288,13 +289,13 @@ const SubmitInspections = () => {
               className="w-1/2 border border-primary text-primary hover:bg-primary hover:text-white h-[45px] rounded-md font-medium"
               onClick={() => handleNextInspection(6)}
             >
-              6 months
+              6 {t("months")}
             </button>
             <button
               className="w-1/2 bg-primary h-[45px] rounded-md text-white border border-primary hover:text-primary hover:bg-transparent font-medium"
               onClick={() => handleNextInspection(12)}
             >
-              12 months
+              12 {t("months")}
             </button>
           </div>
 
@@ -303,12 +304,12 @@ const SubmitInspections = () => {
             onClick={handleSubmit}
             disabled={isLoading}
           >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isLoading ?` ${t("saving")}` : `${t("save")}`}
           </button>
         </div>
 
         <div className="mb-8 w-full">
-          <p className="text-[14px] font-semibold py-1">Upload product picture</p>
+          <p className="text-[14px] font-semibold py-1">{t("uploadProductPicture")}</p>
           <label htmlFor="image" className="p-3">
             <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200 bg-white">
               {imageUrl ? (

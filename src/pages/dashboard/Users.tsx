@@ -15,7 +15,8 @@ const Users = () => {
     const [holdUser] = useHoldUserMutation();
     const { t } = useTranslation(); 
     const { language } = useLanguage();  
-    const [translatedUsers, setTranslatedUsers] = useState([]);  
+    const [translatedUsers, setTranslatedUsers] = useState([]);   
+   
 
     useEffect(() => {
         if (allUsers && allUsers.data) {
@@ -60,7 +61,10 @@ const Users = () => {
                         key: index+1 , 
                         userName: translatedName,
                         address: translatedAddress,
-                        companyName: translatedCompanyName,
+                        companyName: translatedCompanyName, 
+                        userId: user?._id , 
+                        phoneNumber: user?.contact
+
                     };
                 })
             );
@@ -110,7 +114,7 @@ const Users = () => {
                         className={`w-[115px] h-[44px] ${record?.status === 'active' ? 'bg-[#F6FAFF] text-[#023F86]' : 'bg-[#F6FAFF] text-[#9c4343] '}  rounded-lg font-semibold`}
                         onClick={() => handleHold(record?.userId)}
                     >
-                        {record?.status === 'active' ? 'Active' : 'Hold'}
+                        {record?.status === 'active' ? t('active') : t('hold')}
                     </button>
                 </div>
             ),

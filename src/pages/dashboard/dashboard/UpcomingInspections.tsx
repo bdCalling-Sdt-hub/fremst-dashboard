@@ -37,7 +37,7 @@ const UpcomingInspections = ({ homeData }: { homeData: Root }) => {
   const [activeButton, setActiveButton] = useState<string | null>("ascending");
   const [displayedInspections, setDisplayedInspections] = useState<Inspection[]>(
     homeData?.inspections || []
-  ); 
+  );  
 
   const [itemDetails, setItemDetails] = useState(null) 
  const {t} = useTranslation()

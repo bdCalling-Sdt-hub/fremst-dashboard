@@ -111,22 +111,22 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
           <div className=' pt-[13px] pb-[5px] rounded-2xl'>
-            <CommonInput name='companyName' label='Company name' />
-            <CommonInput name='companyPhone' label='Company number' />
-            <CommonInput name='contactPerson' label='Contact person' />
-            <CommonInput name='name' label='Customer name' />
-            <CommonInput name='email' label='Email' />
+            <CommonInput name='companyName' label={t("companyName")} />
+            <CommonInput name='companyPhone' label={t("companyNumber")} />
+            <CommonInput name='contactPerson' label={t("contactPerson")} />
+            <CommonInput name='name' label={t("customerName")} />
+            <CommonInput name='email' label={t("email")} />
             <Form.Item name="password"
-              label={<p className='text-[14px] font-semibold'>Password</p>}
+              label={<p className='text-[14px] font-semibold'>{t("password")}</p>}
               rules={[
                 {
                   required: true,
-                  message: "Please input your new Password!",
+                  message: t("pleaseEnterPassword"),
                 },
 
                 {
                   min: 8,
-                  message: "Password must be at least 8 characters long!",
+                  message: t("passwordMinLength"),
                 },
               ]}
 
@@ -144,12 +144,12 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
                 className={` `}
               />
             </Form.Item>
-            <CommonInput name='phone' label='Phone' />
-            <CommonInput name='address' label='Address' />
+            <CommonInput name='phone' label={t("phone")} />
+            <CommonInput name='address' label={t("address")} />
           </div>
 
           <button className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
-            {editDetails ? 'Save changes' : 'Submit'}
+         {t("save")}
           </button>
         </Form>
 

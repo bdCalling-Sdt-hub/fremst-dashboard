@@ -1,30 +1,59 @@
+// @ts-nocheck
 import { Input, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetAllInspectionsQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { imageUrl } from '../../../redux/base/baseApi';
+import { useLanguage } from '../../../components/shared/LanguageContext';
+import { translateText } from '../../../components/shared/translationUtils';
 
 const Inspections = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const { data: allInspections, isLoading } = useGetAllInspectionsQuery({ page, search: searchTerm });
- 
+  const { language } = useLanguage();  
+  const [translatedUsers, setTranslatedUsers] = useState([]);  
 
-  const data = allInspections?.data?.map((value: any, index: number) => ({
-    key: index + 1,
-    customerId: value?.customer?._id,
-    productId: value?.product?._id,
-    userId: value?._id,
-    username: value?.customer?.contactPerson,
-    companyName: value?.customer?.companyName,
-    product: value?.product?.name,
-    date: moment(value?.lastInspectionDate).format('YYYY-MM-DD'),
-    inspectionId: value?._id,
-  }));
+  useEffect(() => {
+      if (allInspections && allInspections.data) {
+          translateUserData(allInspections.data, language);
+      }
+  }, [language, allInspections]);    
+
+
+  const translateUserData = async (usersData: any[], targetLang: string) => {
+    try {
+        const translatedData = await Promise.all(
+            usersData.map(async (value , index) => {
+                const translatedUserName = await translateText(value?.customer?.contactPerson, targetLang);
+                const translatedCompanyName = await translateText(value?.customer?.companyName, targetLang);
+                const translatedProductName = await translateText(value?.product?.name, targetLang);
+                return {
+                    ...value, 
+                    key: index + 1,
+                    customerId: value?.customer?._id,
+                    productId: value?.product?._id,
+                    userId: value?._id,
+                    username: translatedUserName,
+                    companyName: translatedCompanyName,
+                    product:translatedProductName,
+                    date: moment(value?.lastInspectionDate).format('YYYY-MM-DD'),
+                    inspectionId: value?._id,
+                };
+            })
+        );
+        setTranslatedUsers(translatedData); 
+    } catch (error) {
+        console.error('Error translating user data:', error);
+    }
+}; 
+
+ 
+    
 
   const columns = [
     {
@@ -61,7 +90,7 @@ const Inspections = () => {
         href={`${imageUrl}/api/v1/pdf/create/${record.inspectionId}`}
         download
       >
-        View PDF
+        {t("inspection")}.pdf
       </a>
       ),
     },
@@ -71,7 +100,7 @@ const Inspections = () => {
       render: (_: any, record: any) => (
         <div className="text-[#0D7EFF] font-semibold">
           <Link to={`/inspections-details?customerId=${record.customerId}&productId=${record.productId}&userId=${record.userId}`}>
-            Details
+            {t('details')}
           </Link>
         </div>
       ),
@@ -96,7 +125,7 @@ const Inspections = () => {
       </div>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={translatedUsers}
         loading={isLoading}
         pagination={{
           current: page,

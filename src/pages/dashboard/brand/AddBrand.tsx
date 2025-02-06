@@ -98,11 +98,11 @@ const AddBrand = ({ open, setOpen, editDetails, setEditDetails, refetch }: { ope
 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
           <div className=' pt-[13px] pb-[5px] rounded-2xl'>
-            <CommonInput name='name' label='Brand' />
+            <CommonInput name='name' label={t("brand")} />
           </div>
 
           <button className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
-            {editDetails ? 'Save Changes' : 'Submit'}
+            {t("save")}
           </button>
         </Form>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useInspection } from '../../../context/InspectionContext';
 import { useGetAllCustomersQuery } from '../../../redux/features/Dashboard/customersApi';
@@ -14,7 +14,6 @@ const InspectionsCreate = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const { inspectionData, updateInspectionData } = useInspection(); 
-  const [selectedCustomerId , setSelectedCustomerId] = useState<string | undefined>() 
   // const {data:allEmployees} = useGetAllEmployeesQuery(selectedCustomerId) 
   const product = queryParams.get('id');
   const { category } = useParams();
@@ -29,10 +28,7 @@ const InspectionsCreate = () => {
   }, [product, inspectionData, updateInspectionData]);
 
  
-  const handleCustomerChange = (value:any) => {    
-    const selectedCustomer = JSON.parse(value);
-    setSelectedCustomerId(selectedCustomer?.id)
-  };
+
 
   const onFinish = (values: { customer: string; sku: string; enStandard: string; serialNo: string; brand: string; username: string; storageLocation: string; }) => {
     const selectedCustomer = JSON.parse(values.customer);
@@ -64,13 +60,13 @@ const InspectionsCreate = () => {
       {/* Form */}
       <Form layout='vertical' className='w-1/2' onFinish={onFinish} >
         <div className='pb-[5px]'>
-          <CommonInput name='serialNo' label='Serial no' />
-          <CommonInput name='enStandard' label='En standard' />
-          <CommonInput name='sku' label='Product SKU' />
-          <CommonInput name='storageLocation' label='Storage location' />
+          <CommonInput name='serialNo' label={t("serial")} />
+          <CommonInput name='enStandard' label={t("productEnStandard")} />
+          <CommonInput name='sku' label={t("productSKU")} />
+          <CommonInput name='storageLocation' label={t("storageLocation")} />
           <Form.Item
             name="brand"
-            label={<p className='text-[14px] font-semibold'>Select brand</p>}
+            label={<p className='text-[14px] font-semibold'>{t("selectBrand")}</p>}
             rules={[{ required: true, message: `Customer is required` }]}
           >
             <Select
@@ -90,7 +86,7 @@ const InspectionsCreate = () => {
 
           <Form.Item
             name="customer"
-            label={<p className='text-[14px] font-semibold'>Select customer</p>}
+            label={<p className='text-[14px] font-semibold'>{t("select")} {t("customer")}</p>}
             rules={[{ required: true, message: `Customer is required` }]}
           >
             <Select
@@ -98,7 +94,7 @@ const InspectionsCreate = () => {
               style={{ width: "100%", height: "48px" }}
               showSearch
               optionFilterProp="children" 
-              onChange={(value) => {handleCustomerChange(value)}}
+             
             >
               {customersData?.data?.map((customer: { _id: string, companyName: string}) => (
                <Select.Option
@@ -111,7 +107,7 @@ const InspectionsCreate = () => {
             </Select>
           </Form.Item>  
 
-          <CommonInput name='username' label='Select Employee' />
+          <CommonInput name='username' label={`${t("select")} ${t("employee")}`} />
 
           {/* <Form.Item
             name="username"
@@ -140,7 +136,7 @@ const InspectionsCreate = () => {
 
         <Form.Item>
           <button type="submit" className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
-            Next
+            {t("next")}
           </button>
         </Form.Item>
       </Form>

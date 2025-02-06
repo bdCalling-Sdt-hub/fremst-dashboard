@@ -29,7 +29,8 @@ const InspectionDetails = () => {
  const {t} = useTranslation()
   const inspectionDetails = inspection?.data 
   const { data } = useGetProfileQuery(undefined);
-  const profileData = data?.data; 
+  const profileData = data?.data;  
+
 
   const inspectionHistory = inspectionsHistory?.data?.history?.map((value: any, index: number) => ({
     key: index + 1,
@@ -88,7 +89,7 @@ const InspectionDetails = () => {
       href={`${imageUrl}/api/v1/pdf/create/${record.id}`}
       download
     >
-     Inspection.pdf
+     {t("inspection")}.pdf
     </a>,
     },
     { title: t("inspectionDate") , dataIndex: 'date', key: 'date' }, 
@@ -97,7 +98,7 @@ const InspectionDetails = () => {
       title: t("overview"),
       key: 'action',
       render: (_: any, record: any) => <div> 
-        { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>Delete</button> : "" } 
+        { profileData?.role==="SUPERADMIN" ? <button className="text-red-500 cursor-pointer" onClick={() => handleDelete(record?.id)}>{t("delete")}</button> : "" } 
       </div>  
     },
   ];
@@ -123,19 +124,19 @@ const InspectionDetails = () => {
 
       {/* Main Details Section */}
       <div className='mb-3 space-2'>
-        <Text strong>Username:</Text>{inspectionDetails?.contactPerson}<br />
-        <Text strong>Product active:</Text> <Checkbox checked={inspectionDetails?.isActive}  ></Checkbox><br />
-        <Text strong>Latest inspection:</Text> <Link href={`${imageUrl}${inspectionDetails?.pdfReport}`} target="_blank" className="text-blue-600">Inspection.pdf</Link>
+      
+        <Text strong>{t("productActive")}:</Text> <Checkbox checked={inspectionDetails?.isActive}  ></Checkbox><br />
+        <Text strong>{t("latestInspection")}:</Text> <Link href={`${imageUrl}${inspectionDetails?.pdfReport}`} target="_blank" className="text-blue-600">{t("inspection")}.pdf</Link>
       </div>
 
-      <div className="flex items-center  gap-8 mb-6">
+      <div className="flex items-center  gap-8 mb-6 mt-3">
         {/* Image Side */}
         <div className=" pr-4">
           <img src={
             inspectionDetails?.productImage?.startsWith("https")
               ? inspectionDetails?.productImage
               : `${imageUrl}${inspectionDetails?.productImage}`
-          } className="rounded-lg mb-2 w-[302px] h-[280px] " />
+          } className="rounded-lg mb-2 w-[302px] h-[230px] " />
         </div>
 
         {/* Text Side */}
@@ -143,70 +144,57 @@ const InspectionDetails = () => {
           <div className="space-y-[2px]">
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product sku:</Text>
+              <Text strong className="">{t("productSKU")}:</Text>
               <Text className="">{inspectionDetails?.sku}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product name:</Text>
+              <Text strong className="">{t("productName")}:</Text>
               <Text className="">{inspectionDetails?.productName}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product brand:</Text>
-              <Text className="">{inspectionDetails?.brand}</Text>
-            </div>
-
-            <div className="flex items-center gap-5">
-              <Text strong className="">Product type:</Text>
-              <Text className="">{inspectionDetails?.type}</Text>
-            </div>
-
-            <div className="flex items-center gap-5">
-              <Text strong className="">Product serial no:</Text>
+              <Text strong className="">{t("productSerialNo")}:</Text>
               <Text className="">{inspectionDetails?.serialNo}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product en standard:</Text>
+              <Text strong className="">{t("productEnStandard")}:</Text>
               <Text className="">{inspectionDetails?.enStandard}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Inspection interval:</Text>
+              <Text strong className="">{t("inspectionInterval")}:</Text>
               <Text className="">{inspectionDetails?.inspectionInterval}</Text>
             </div>
 
             <div className="flex items-center gap-5 ">
-              <Text strong className="">Latest inspection date:</Text>
+              <Text strong className="">{t("latestInspectionDate")}:</Text>
               <Text className="">{moment(inspectionDetails?.lastInspectionDate).format("YYYY-MM-DD")}</Text>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Product active:</Text>
+              <Text strong className="">{t("productActive")}:</Text>
               <Checkbox checked={inspectionDetails?.isActive} className="" />
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Inspection history:</Text> 
+              <Text strong className="">{t("inspectionHistory")}:</Text> 
               <a
         className="text-blue-500 "
         href={`${imageUrl}/api/v1/pdf/create/${userId}`}
         download
       >
-       Inspection.pdf
+       {t("inspection")}.pdf
       </a>
             </div>
 
             <div className="flex items-center gap-5">
-              <Text strong className="">Company name:</Text>
+              <Text strong className="">{t("companyName")}:</Text>
               <Text className="">{inspectionDetails?.companyName}</Text>
             </div>
 
-            <div className="flex items-center gap-5">
-              <Text strong className="">Contact person:</Text>
-              <Text className="">{inspectionDetails?.contactPerson}</Text>
-            </div>
+           
           </div>
 
         </div>

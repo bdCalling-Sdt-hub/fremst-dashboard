@@ -1,9 +1,12 @@
-import { useState } from "react";
+//@ts-nocheck
+import { useEffect, useState } from "react";
 import { useDeleteBrandMutation, useGetAllBrandsQuery } from "../../../redux/features/Dashboard/brandApi";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { Table } from "antd";
 import AddBrand from "./AddBrand";
+import { useLanguage } from "../../../components/shared/LanguageContext";
+import { translateText } from "../../../components/shared/translationUtils";
 
 const Brand = () => {
     const [page, setPage] = useState(1)
@@ -11,13 +14,34 @@ const Brand = () => {
     const [deleteBrand] = useDeleteBrandMutation()
     const [editDetails, setEditDetails] = useState()
     const { data: brandsData, refetch } = useGetAllBrandsQuery(page);
-    const { t } = useTranslation()
-
-    const customerData = brandsData?.data?.map((value: { _id: string, name: string } , index: number) => ({ 
-        key: index + 1,
-        id: value._id,
-        brand: value?.name
-    }))
+    const { t } = useTranslation() 
+      const { language } = useLanguage();
+      const [translatedUsers, setTranslatedUsers] = useState([]);
+    
+      useEffect(() => {
+        if (brandsData && brandsData.data) {
+          translateUserData(brandsData.data, language);
+        }
+      }, [language, brandsData]);
+    
+      const translateUserData = async (values: any[], targetLang: string) => {
+        try {
+          const translatedData = await Promise.all(
+            values.map(async (value , index) => {
+              const translatedBrandName = await translateText(value?.name, targetLang);  
+              return {
+                ...value,
+                key: index + 1,
+                id: value._id,
+                brand: translatedBrandName
+              };
+            })
+          );
+          setTranslatedUsers(translatedData);
+        } catch (error) {
+          console.error('Error translating user data:', error);
+        }
+      }; 
 
 
 
@@ -77,9 +101,9 @@ const Brand = () => {
                 <div className='flex gap-2 items-center font-medium'>
                     {/* Edit Link with ID */}
 
-                    <p className='text-primary cursor-pointer' onClick={() => { setEditDetails(record); setOpen(true) }}>Edit</p>
+                    <p className='text-primary cursor-pointer' onClick={() => { setEditDetails(record); setOpen(true) }}>{t("edit")}</p>
 
-                    <p className='text-[#D2410A] cursor-pointer' onClick={() => handleDelete(record.id)}>Delete</p>
+                    <p className='text-[#D2410A] cursor-pointer' onClick={() => handleDelete(record.id)}>{t("delete")}</p>
                 </div>
             ),
         },
@@ -100,7 +124,7 @@ const Brand = () => {
                     </button>
                 </div>
             </div>
-            <Table columns={columns} dataSource={customerData}
+            <Table columns={columns} dataSource={translatedUsers}
                 pagination={{
                     current: page,
                     total: brandsData?.pagination?.total || 0,

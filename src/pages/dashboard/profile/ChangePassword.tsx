@@ -2,9 +2,11 @@ import { Button, Form, Input } from 'antd';
 import { useChangePasswordMutation } from '../../../redux/features/auth/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 const ChangePassword = () => {
-    const [changePassword , {data , isError , isLoading , isSuccess , error }] = useChangePasswordMutation() 
+    const [changePassword , {data , isError , isLoading , isSuccess , error }] = useChangePasswordMutation()  
+    const {t} = useTranslation()
  
     useEffect(() => {
         if (isSuccess) { 
@@ -39,18 +41,18 @@ const ChangePassword = () => {
             <Form.Item
                     label={
                         <label  className="block text-primaryText mb-1 text-lg">
-                            Current password
+                          {t("currentPassword")}
                         </label>
                     }
                     name="currentPassword"
-                    rules={[{ required: true, message: 'Please input Current password!' }]}
+                    rules={[{ required: true, message: t("pleaseInputCurrentPassword") }]}
                 >
                     <Input.Password placeholder="KK!@#$15856" className=" h-12 px-6" />
                 </Form.Item>
                 <Form.Item
                     label={
                         <label className="block text-primaryText mb-1 text-lg">
-                            New password
+                           {t("newPassword")}
                         </label>
                     }
                     name="newPassword"
@@ -58,16 +60,16 @@ const ChangePassword = () => {
                     rules={[
                       {
                         required: true, 
-                        message: "Please input your New password!",
+                        message: t("pleaseInputNewPassword"),
                       }, 
                       {
                         min: 8,
-                        message: "Password must be at least 8 characters long!",
+                        message: t("passwordMinLength"),
                     },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
                           if (!value || getFieldValue('currentPassword') === value) {
-                            return Promise.reject(new Error('The New password is similar to the current Password'));
+                            return Promise.reject(new Error(t("passwordSimilarError")));
                           }
                           return Promise.resolve();
                         },
@@ -80,7 +82,7 @@ const ChangePassword = () => {
                 <Form.Item
                     label={
                         <label className="block text-primaryText mb-1 text-lg">
-                            Confirm password
+                            {t("confirmPassword")}
                         </label>
                     }
                     name="confirmPassword"
@@ -88,14 +90,14 @@ const ChangePassword = () => {
                     rules={[
                       {
                         required: true, 
-                        message: "Please input your Confirm password!",
+                        message: t("pleaseInputConfirmPassword"),
                       },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
                           if (!value || getFieldValue('newPassword') === value) {
                             return Promise.resolve();
                           }
-                          return Promise.reject(new Error('The new password that you entered do not match!'));
+                          return Promise.reject(new Error(t("passwordMismatchError")));
                         },
                       }),
                     ]}
@@ -114,7 +116,7 @@ const ChangePassword = () => {
                             fontWeight: 500,
                         }}
                     >
-                     {isLoading ? "Loading..." : "Change password"} 
+                     {isLoading ? `${t("loading")}` : `${t("changePassword")}`} 
                     </Button>
                 </Form.Item>
             </Form>

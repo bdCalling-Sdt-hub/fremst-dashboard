@@ -7,6 +7,7 @@ import { useDeleteQuestionMutation, useGetAllQuestionsQuery } from '../../../red
 import { imageUrl } from '../../../redux/base/baseApi';
 import { MdDelete } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 
 const EditSubCategory = () => {
@@ -20,7 +21,8 @@ const EditSubCategory = () => {
   const { category, subCategory } = useParams();
   const {data:allQuestions , refetch} = useGetAllQuestionsQuery(stepId) 
 const [deleteQuestion] = useDeleteQuestionMutation()
- const navigate = useNavigate()
+ const navigate = useNavigate() 
+ const { t } = useTranslation();
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -67,7 +69,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
       <Breadcrumb
         items={[
           {
-            title: <Link to="/products-edit" className="text-[16px] font-medium">Edit product inspection</Link>,
+            title: <Link to="/products-edit" className="text-[16px] font-medium">{t("editProductInspection")}</Link>,
           },
           {
             title: <Link to={`/products-edit/${category}?id=${productId}`} className="text-[16px] font-medium">{category}</Link>,
@@ -78,7 +80,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
         ]}
       />
 
-      <h2 className="text-2xl font-semibold my-6">Edit {subCategory} details</h2>
+      <h2 className="text-2xl font-semibold my-6"> {t("edit")} {subCategory} {t("details")}</h2>
 
 
       <div  className='w-full'>
@@ -102,7 +104,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
                 name="question"
                 label={
                   <div className="flex items-center justify-between w-[450px]">
-                    <p className="text-[16px] font-semibold">{`Question - ${index + 1}`}</p> 
+                    <p className="text-[16px] font-semibold">{`${t("question")} - ${index + 1}`}</p> 
 
                     <div className='flex items-center gap-1'> 
 
@@ -142,10 +144,10 @@ const [deleteQuestion] = useDeleteQuestionMutation()
               <Form.Item name="isComment" className='mt-5'>
                 <Radio.Group defaultValue={value.isComment ? "true" : "false"} >
                   <Radio value="true" className="text-[#45C518]" >
-                    YES
+                    {t("yes")}
                   </Radio>
                   <Radio value="false" className="text-[#FF3E3E]">
-                    NO
+                    {t("no")}
                   </Radio>
                 </Radio.Group>
               </Form.Item>
@@ -158,13 +160,13 @@ const [deleteQuestion] = useDeleteQuestionMutation()
               onClick={() => setOpen(true)}
               className="flex items-center space-x-2 mb-8  border border-primary px-2 py-1 rounded "
             >
-              <span className=' font-semibold text-primary '>+ Add question</span>
+              <span className=' font-semibold text-primary '>+ {t("addQuestion")}</span>
             </Button>
           </div>
 
           {/* Image Upload Section */}
           <div className="mb-8 w-full" >
-            <p className="text-[14px] font-semibold py-1">Upload product picture</p>
+            <p className="text-[14px] font-semibold py-1">{t("uploadProductPicture")}</p>
             <label
               htmlFor="image"
               style={{ display: "block", }}
@@ -185,7 +187,7 @@ const [deleteQuestion] = useDeleteQuestionMutation()
         </div>
         {/* Next Button */}
         <Button type="primary" className=" bg-primary h-[48px] w-[360px] text-white" onClick={()=>navigate(`/products-edit/${category}?id=${productId}`)}>
-          Next
+          {t("next")}
         </Button>
       </div>
 

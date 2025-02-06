@@ -4,6 +4,7 @@ import { GoArrowLeft } from 'react-icons/go';
 import { useGetInpectionsQuestionQuery } from '../../../redux/features/Dashboard/inspectionsApi';
 import { useInspection } from '../../../context/InspectionContext';
 import { imageUrl } from '../../../redux/base/baseApi';
+import { useTranslation } from 'react-i18next';
 
 const InspectSubCategory = () => {
   const location = useLocation(); 
@@ -14,7 +15,8 @@ const InspectSubCategory = () => {
   const { category , subcategory } = useParams();
   const { data } = useGetInpectionsQuestionQuery(id);
   //console.log(subcategory); 
-  const { updateStepData } = useInspection();
+  const { updateStepData } = useInspection(); 
+  const { t } = useTranslation();
 
   const questions = data?.data?.map((value: { _id: string, question: string, isComment: boolean }) => ({
     id: value?._id,
@@ -40,7 +42,7 @@ const InspectSubCategory = () => {
         className="text-[16px] flex items-center gap-1 font-medium "
       >
         <GoArrowLeft size={28} />
-        <span className="font-medium">Back</span>
+        <span className="font-medium">{t('back')}</span>
       </Link>
 
       <Form onFinish={handleSaveStep} className="w-full mt-5" layout='vertical'>
@@ -51,7 +53,7 @@ const InspectSubCategory = () => {
                 <Form.Item
                   name={`question_${index}`}
                   initialValue={question.name}
-                  label={`Question - ${index + 1}`}
+                  label={`${t('question')} - ${index + 1}`}
                 >
                   <Input style={{
                         border: "1px solid #BABABA",
@@ -68,7 +70,7 @@ const InspectSubCategory = () => {
                 <div className="flex items-center space-x-4">
                   <Form.Item
                     name={`comment_${index}`}
-                    label="Comment field"
+                    label={t('commentField')}
                     rules={[{ required: question.isComment, message: 'Comment is required' }]}
                   >
                     <Input 
@@ -85,8 +87,8 @@ const InspectSubCategory = () => {
 
                   <Form.Item name={`isYes_${index}`}>
                     <Radio.Group>
-                      <Radio value="true">YES</Radio>
-                      <Radio value="false">NO</Radio>
+                      <Radio value="true">{t("yes")}</Radio>
+                      <Radio value="false">{t("no")}</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </div>
@@ -95,7 +97,7 @@ const InspectSubCategory = () => {
           </div>
 
           <div className="w-full">
-            <p className="text-[14px] font-semibold py-1">Upload product picture</p>
+            <p className="text-[14px] font-semibold py-1">{t("uploadProductPicture")}</p>
             <div className="flex justify-center items-center w-full h-[250px] border-2 border-dotted border-gray-200">
               <img
                 src={
@@ -111,7 +113,7 @@ const InspectSubCategory = () => {
         </div>
 
         <Button type="primary" htmlType="submit" className="bg-primary h-[48px] w-[360px] text-white">
-          Save & next
+          {t("save")}
         </Button>
       </Form>
     </div>
