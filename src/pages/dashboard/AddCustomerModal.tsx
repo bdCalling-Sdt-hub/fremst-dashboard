@@ -7,13 +7,14 @@ import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 
 interface editDetailsType {
-  id: string | number | null,
+  _id: string | number | null,
   companyName: string,
   companyNumber: string,
   contactPerson: string,
   address: string,
   email: string,
-  phone: string
+  phone: string 
+  name:string
 }
 
 const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch }: { open: boolean, setOpen: (open: boolean) => void, setEditDetails: any, editDetails: editDetailsType | undefined, refetch: any }) => {
@@ -22,23 +23,25 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
   const [form] = Form.useForm()
   const [addCustomer] = useAddCustomerMutation()
   const [editCustomer] = useEditCustomerMutation()
-  const { t } = useTranslation() 
+  const { t } = useTranslation()  
+
   
   useEffect(() => {
     if (editDetails) {
-      form.setFieldsValue({ email: editDetails?.email, companyName: editDetails?.companyName, companyPhone: editDetails?.companyNumber, contactPerson: editDetails?.contactPerson, address: editDetails?.address, phone: editDetails?.phone })
+      form.setFieldsValue({ email: editDetails?.email, companyName: editDetails?.companyName, companyPhone: editDetails?.companyNumber, contactPerson: editDetails?.contactPerson, address: editDetails?.address, contact: editDetails?.phone , name: editDetails?.name })
     }
   }, [editDetails, form])
 
   const onFinish = async (values: { question: string, answer: string }) => {
     const data = {
-      id: editDetails?.id,
-      ...values
-    }
+      id: editDetails?._id,   
+       ...values
+     }  
 
-    if (editDetails) {
+
+    if (editDetails?._id) { 
+    
       await editCustomer(data).then((res) => {
-        //console.log(res);
         if (res?.data?.success) {
           Swal.fire({
             text: res?.data?.message,
@@ -112,11 +115,11 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
           <div className=' pt-[13px] pb-[5px] rounded-2xl'>
             <CommonInput name='companyName' label={t("companyName")} />
-            <CommonInput name='companyPhone' label={t("companyNumber")} />
-            <CommonInput name='contactPerson' label={t("contactPerson")} />
             <CommonInput name='name' label={t("customerName")} />
-            <CommonInput name='email' label={t("email")} />
-            <Form.Item name="password"
+            <CommonInput name='email' label={t("email")} /> 
+
+            { 
+            editDetails?._id ? "" :  <Form.Item name="password"
               label={<p className='text-[14px] font-semibold'>{t("password")}</p>}
               rules={[
                 {
@@ -129,7 +132,6 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
                   message: t("passwordMinLength"),
                 },
               ]}
-
             >
               <Input.Password
                 style={{
@@ -144,11 +146,13 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
                 className={` `}
               />
             </Form.Item>
-            <CommonInput name='phone' label={t("phone")} />
+            }
+           
+            <CommonInput name='contact' label={t("phone")} />
             <CommonInput name='address' label={t("address")} />
           </div>
 
-          <button className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
+          <button type='submit' className="bg-primary text-white w-full h-[50px] text-lg rounded-lg mt-5">
          {t("save")}
           </button>
         </Form>

@@ -33,18 +33,18 @@ const Customers = () => {
       const translatedData = await Promise.all(
         values.map(async (value) => {
           const translatedCompanyName = await translateText(value?.companyName, targetLang);
-          const translatedContactPerson = await translateText(value.contactPerson, targetLang);
-          const translatedAddress = await translateText(value.address, targetLang);
+          const translatedContactPerson = await translateText(value?.contactPerson, targetLang);
+          const translatedAddress = await translateText(value?.address, targetLang);
 
           return {
             ...value,
             id: value._id,
             companyName: translatedCompanyName,
-            companyNumber: value.companyPhone,
+            companyNumber: value?.companyPhone,
             contactPerson: translatedContactPerson,
             address: translatedAddress,
-            email: value.email,
-            phone: value.phone
+            email: value?.email,
+            phone: value?.contact
           };
         })
       );
@@ -103,16 +103,7 @@ const Customers = () => {
       dataIndex: 'companyName',
       key: 'companyName',
     },
-    {
-      title: t("companyNumber"),
-      dataIndex: 'companyNumber',
-      key: 'companyNumber',
-    },
-    {
-      title: t("contactPerson"),
-      dataIndex: 'contactPerson',
-      key: 'contactPerson',
-    },
+
     {
       title: t('address'),
       dataIndex: 'address',

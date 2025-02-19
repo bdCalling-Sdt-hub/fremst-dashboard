@@ -26,6 +26,7 @@ const SubmitInspections = () => {
   const customerName = customer?.data?.contactPerson;
   const [month, setMonth] = useState(0)
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (isSuccess) {
       if (data) {
