@@ -10,6 +10,7 @@ const InspectSubCategory = () => {
   const location = useLocation(); 
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+  const { markStepComplete } = useInspection();
   const id = queryParams.get('id');
   const product = queryParams.get('product');
   const { category , subcategory } = useParams();
@@ -31,7 +32,8 @@ const InspectSubCategory = () => {
       isYes: values[`isYes_${index}`] === 'true',
     })) || [];
   
-    updateStepData(subcategory || 'defaultStep', answers); 
+    updateStepData(subcategory || 'defaultStep', answers);  
+    if (id) markStepComplete(id); 
     navigate(`/inspections-creates/${category}?id=${product}`);
   };
 
@@ -71,7 +73,7 @@ const InspectSubCategory = () => {
                   <Form.Item
                     name={`comment_${index}`}
                     label={t('commentField')}
-                    rules={[{ required: question.isComment, message: 'Comment is required' }]}
+                    // rules={[{ required: question.isComment, message: 'Comment is required' }]} 
                   >
                     <Input 
                     style={{
@@ -85,7 +87,7 @@ const InspectSubCategory = () => {
                   }}  disabled={!question.isComment} />
                   </Form.Item>
 
-                  <Form.Item name={`isYes_${index}`}>
+                  <Form.Item name={`isYes_${index}`}  rules={[{ required: true, message: "Please select an option!" }]}>
                     <Radio.Group>
                       <Radio value="true">{t("yes")}</Radio>
                       <Radio value="false">{t("no")}</Radio>

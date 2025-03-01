@@ -1,27 +1,32 @@
 import { useTranslation } from "react-i18next";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
+import { useGetProfileQuery } from "../../../redux/features/auth/authApi";
 export interface Root {
-    customers: number
-    products: number
-    
+    customers?: number
+    products?: number
+    employees?: number 
+    inspections?: number
   }
   
 
 
 const Summary = ({homeData}:{homeData:Root}) => {  
-    const {t} = useTranslation(); 
+    const {t} = useTranslation();   
+    const {data:profile} = useGetProfileQuery(undefined) 
+    const profileRole = profile?.data?.role
+
 
     const data=[
         {
             icon: <IoPersonCircleOutline size={32} /> , 
-            title: t("customer")  ,
-            total: homeData?.customers
+            title: profileRole === "CUSTOMER" ? t("employees") : t("customer")  ,
+            total: profileRole === "CUSTOMER" ? homeData?.employees : homeData?.customers
         } , 
         {
             icon: <PiDotsNineBold size={32} /> , 
-            title: t("products") ,
-            total: homeData?.products
+            title: profileRole === "CUSTOMER" ? t("inspections") : t("products") ,
+            total:  profileRole === "CUSTOMER" ? homeData?.inspections: homeData?.products
         } , 
     ]
     return (

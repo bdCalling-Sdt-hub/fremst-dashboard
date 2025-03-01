@@ -32,12 +32,15 @@ interface InspectionData {
 interface InspectionContextValue {
   inspectionData: InspectionData;
   updateInspectionData: (field: keyof InspectionData, value: string) => void;
-  updateStepData: (stepName: string, answers: StepAnswer[]) => void;
+  updateStepData: (stepName: string, answers: StepAnswer[]) => void; 
+  completedSteps: Record<string, boolean>;
+  markStepComplete: (stepId: string) => void;
 }
 
 const InspectionContext = createContext<InspectionContextValue | undefined>(undefined);
 
-export const InspectionProvider = ({ children }: { children: React.ReactNode }) => {
+export const InspectionProvider = ({ children }: { children: React.ReactNode }) => { 
+  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({}); 
   const [inspectionData, setInspectionData] = useState<InspectionData>({
     product: '',
     customer: '',
@@ -54,7 +57,11 @@ export const InspectionProvider = ({ children }: { children: React.ReactNode }) 
     lastInspectionDate: '', 
     nextInspectionDate: '',
     step: [],
-  });
+  }); 
+
+  const markStepComplete = (stepId: string) => {
+    setCompletedSteps((prev) => ({ ...prev, [stepId]: true }));
+  }; 
 
   const updateStepData = (stepName: string, answers: StepAnswer[]) => {
     setInspectionData((prevState) => {
@@ -88,7 +95,7 @@ export const InspectionProvider = ({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <InspectionContext.Provider value={{ inspectionData, updateInspectionData, updateStepData }}>
+    <InspectionContext.Provider value={{ inspectionData, updateInspectionData, updateStepData , completedSteps, markStepComplete }}>
       {children}
     </InspectionContext.Provider>
   );

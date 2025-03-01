@@ -114,7 +114,7 @@ const AddCustomerModal = ({ open, setOpen, editDetails, setEditDetails, refetch 
 
         <Form layout='vertical' className='' form={form} onFinish={onFinish}>
           <div className=' pt-[13px] pb-[5px] rounded-2xl'>
-            <CommonInput name='companyName' label={t("companyName")} />
+            {/* <CommonInput name='companyName' label={t("companyName")} />  */}
             <CommonInput name='name' label={t("customerName")} />
             <CommonInput name='email' label={t("email")} /> 
 

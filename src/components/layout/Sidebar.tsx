@@ -61,7 +61,7 @@ const Sidebar = () => {
             label: t('brand'),
             path: 'brand',
             icon: <TbBrandBing size={24} />, 
-            roles: ['SUPERADMIN', 'CUSTOMER'],
+            roles: ['SUPERADMIN'],
         },
         {
             key: 'settings',
